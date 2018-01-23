@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "1025721359699",
+    "firebase_url": "https://myfyp-a17e5.firebaseio.com",
+    "project_id": "myfyp-a17e5",
+    "storage_bucket": "myfyp-a17e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025721359699:android:deaae79cdf056ac3",
+        "android_client_info": {
+          "package_name": "com.firebaseloginapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1025721359699-ldeiqlk3882bo9a7bvfrcueuqgoggni5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdV7WrM8i984HGV6SYlSVLTyc0RkcBNqE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025721359699:android:0e4fa3ca5a6396a3",
+        "android_client_info": {
+          "package_name": "com.example.apple.whattodo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1025721359699-ldeiqlk3882bo9a7bvfrcueuqgoggni5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdV7WrM8i984HGV6SYlSVLTyc0RkcBNqE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
