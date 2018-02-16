@@ -100,6 +100,8 @@ public class LoginActivity extends AppCompatActivity {
                                 } else {
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
+                                    //todo: store the id below in a session so it becomes accessible by tinderSwiper
+                                    String userId = auth.getCurrentUser().getUid();
                                     finish();
                                 }
                             }

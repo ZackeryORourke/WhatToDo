@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,9 @@ import android.widget.Toast;
 
 import com.example.apple.whattodo.AccountActivity.LoginActivity;
 import com.example.apple.whattodo.AccountActivity.RegisterActivity;
+import com.example.apple.whattodo.EventController.EventFeed;
+import com.example.apple.whattodo.EventController.EventsInMyArea;
+import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -231,6 +237,46 @@ public class MainActivity extends AppCompatActivity {
             auth.removeAuthStateListener(authListener);
         }
     }
+
+
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        switch (item.getItemId()){
+
+            case R.id.feed:
+                Intent feedIntent = new Intent(this, EventFeed.class);
+                this.startActivity(feedIntent);
+                return true;
+
+
+
+
+            case R.id.locationFeed:
+                Intent areaIntent = new Intent(this, EventsInMyArea.class);
+                this.startActivity(areaIntent);
+                return true;
+
+
+            case R.id.swipeView:
+                Intent swipeIntent = new Intent(this, SwipeActivity.class);
+                this.startActivity(swipeIntent);
+                return true;
+
+
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
 
 
