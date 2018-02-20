@@ -8,6 +8,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
 import com.example.apple.whattodo.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;
@@ -36,7 +39,7 @@ public class EventCard {
 
     @SwipeView
     private android.view.View cardView;
-
+    private FirebaseAuth auth;
     private Profile category;
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
@@ -55,6 +58,8 @@ public class EventCard {
 
     @Resolve
     private void onResolved(){
+        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
         MultiTransformation multi = new MultiTransformation(
                 new BlurTransformation(mContext, 30),
                 new RoundedCornersTransformation(
@@ -88,7 +93,6 @@ public class EventCard {
         Log.d("EVENT", "onSwipedOut");
 //        mSwipeView.addView(this);
         // save to db that user does not like this category:
-        boolean wantsThis = false;
         //User is the owner of the device
         //you can "inject" the id of user, becasue its theonly thing you need
         //app.post(userId, this.category, wantsThis);
@@ -98,6 +102,13 @@ public class EventCard {
 //                url,
 //                { userId: userId, categoryId, this.category.Id, wantsThis},
         //          function that handles the response (ok, notOk)
+
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(category.getName());
+
+        myRef.setValue("Rejects-"+auth.getUid());
+
 
 
 
@@ -111,7 +122,11 @@ public class EventCard {
     @SwipeIn
     private void onSwipeIn(){
         Log.d("EVENT", "onSwipedIn");
-        likeFootball= true;
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(category.getName()+"-----"+auth.getUid());
+
+        myRef.setValue("Accepts-");
 
 
         ;
