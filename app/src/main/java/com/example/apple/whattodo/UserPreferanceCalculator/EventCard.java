@@ -43,7 +43,7 @@ public class EventCard {
     private Profile category;
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
-    private boolean likeFootball ;
+    private boolean likeEvent ;
     private int swipeCounter=0 ;
 
     public EventCard(
@@ -105,9 +105,10 @@ public class EventCard {
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(category.getName());
+        likeEvent=false;
+        DatabaseReference myRef = database.getReference(category.getName()+"---"+likeEvent);
+        myRef.setValue(auth.getUid());
 
-        myRef.setValue("Rejects-"+auth.getUid());
 
 
 
@@ -124,9 +125,11 @@ public class EventCard {
         Log.d("EVENT", "onSwipedIn");
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(category.getName()+"-----"+auth.getUid());
+        likeEvent=true;
+        DatabaseReference myRef = database.getReference(category.getName()+"---"+likeEvent);
+        myRef.setValue(auth.getUid());
+       // myRef.setValue(likeEvent=true);
 
-        myRef.setValue("Accepts-");
 
 
         ;

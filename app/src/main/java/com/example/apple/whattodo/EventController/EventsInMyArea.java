@@ -1,8 +1,10 @@
 package com.example.apple.whattodo.EventController;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -16,14 +18,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -42,60 +49,25 @@ public class EventsInMyArea extends AppCompatActivity {
     private static final String TAG = EventsInMyArea.class.getSimpleName();
 
     // Movies json url
-    private static final String url = "https://www.eventbriteapi.com/v3/events/search/?location.address=Dublin&token=IULJK3QH2256C6ARBMQR";
+    private static final String url = "https://www.eventbriteapi.com/v3/events/search/?location.latitude=53.3498&location.longitude=6.2603&token=IULJK3QH2256C6ARBMQR";
     private ProgressDialog pDialog;
     private List<EventModel> eventModelList = new ArrayList<EventModel>();
     private ListView listView;
-    private FusedLocationProviderClient mFusedLocationClient;
     private CustomListAdapter adapter;
-    Location location; // location
-            double latitude; // latitude (-90 to +90)
-            double longitude; // longitude (-180 to +180)
-
-
-
-
+    protected LocationManager locationManager;
+    private FusedLocationProviderClient mFusedLocationClient;
+    double longitude;
+    double latitude;
+    String longitude1;
+    String latitude1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_feed);
-
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-                             latitude = location.getLatitude();
-                             longitude= location.getLongitude();
-
-                        }
-                    }
-                });
-
-
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("https")
-                .authority("www.eventbriteapi.com")
-                .appendPath("v3")
-                .appendPath("events")
-                .appendPath("search") //after search things go a little wild. ? is coming up as &3F
-                .appendPath("")
-                .appendQueryParameter("location.latitude" , String.valueOf(latitude))
-                .appendQueryParameter("sort", "relevance")
-                .fragment("section-name");
-        String myUrl = builder.build().toString();
-
-
 
         listView = (ListView) findViewById(R.id.list);
         adapter = new CustomListAdapter(this, eventModelList);
@@ -106,9 +78,39 @@ public class EventsInMyArea extends AppCompatActivity {
         pDialog.setMessage("Loading...");
         pDialog.show();
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                // Logic to handle location object
+
+                          longitude= location.getLongitude();
+                          latitude = location.getLatitude();
+                          latitude1 = String.valueOf(location.getLatitude());
+                          longitude1= String.valueOf(location.getLongitude());
+
+
+                        }
+                    }
+                });
+
+
+
 
         // Creating volley request obj
-        JsonObjectRequest eventReq = new JsonObjectRequest(Request.Method.GET, myUrl, null,       //this is where the application is currently crashing
+        JsonObjectRequest eventReq = new JsonObjectRequest(Request.Method.GET, url, null,       //this is where the application is currently crashing
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -150,9 +152,16 @@ public class EventsInMyArea extends AppCompatActivity {
             }
         });
 
+
+
+
+
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(eventReq);
     }
+
+
+
 
 
     @Override
@@ -167,30 +176,6 @@ public class EventsInMyArea extends AppCompatActivity {
             pDialog = null;
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    public double getLongitude(){
-        if(location != null){
-            longitude = location.getLongitude();
-        }
-        // return longitude
-        return longitude;
-    }
-
-    public double getLatitude(){
-        if(location != null){
-            latitude = location.getLatitude();
-        }
-        // return latitude
-        return latitude;
-    }
-
 
 
 
