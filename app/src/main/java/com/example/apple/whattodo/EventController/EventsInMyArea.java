@@ -17,20 +17,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
+
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -48,8 +42,8 @@ public class EventsInMyArea extends AppCompatActivity {
     // Log tag
     private static final String TAG = EventsInMyArea.class.getSimpleName();
 
-    // Movies json url
-    private static final String url = "https://www.eventbriteapi.com/v3/events/search/?location.latitude=53.3498&location.longitude=6.2603&token=IULJK3QH2256C6ARBMQR";
+    // Events json url
+    public String myUrl;
     private ProgressDialog pDialog;
     private List<EventModel> eventModelList = new ArrayList<EventModel>();
     private ListView listView;
@@ -80,89 +74,50 @@ public class EventsInMyArea extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                // Got last known location. In some rare situations this can be null.
+                        // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                // Logic to handle location object
-
-                          longitude= location.getLongitude();
-                          latitude = location.getLatitude();
-                          latitude1 = String.valueOf(location.getLatitude());
-                          longitude1= String.valueOf(location.getLongitude());
-
-
+                            // Logic to handle location object
+                            longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+                            latitude1 = String.valueOf(location.getLatitude());
+                            longitude1 = String.valueOf(location.getLongitude());
+                            Uri.Builder builder = new Uri.Builder();
+                            builder.scheme("https")
+                                    .authority("www.eventbriteapi.com")
+                                    .appendPath("v3")
+                                    .appendPath("events")
+                                    .appendPath("search")
+                                    .appendQueryParameter("location.latitude", latitude1)
+                                    .appendQueryParameter("location.longitude", longitude1)
+                                    .appendQueryParameter("token", "IULJK3QH2256C6ARBMQR");
+                            myUrl = builder.build().toString();
+                            PullFromEventBright();
                         }
                     }
                 });
-
-
-
-
-        // Creating volley request obj
-        JsonObjectRequest eventReq = new JsonObjectRequest(Request.Method.GET, url, null,       //this is where the application is currently crashing
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, response.toString());
-                        hidePDialog();
-
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("events");
-
-                            for (int i = 0; i < jsonArray.length(); i++) {
-
-                                JSONObject employee = jsonArray.getJSONObject(i); //something goes wrong here, i think its possibly with the size of the reading
-                                EventModel eventModel = new EventModel();
-                                eventModel.setTitle(employee.getJSONObject("name").getString("text"));
-                                // eventModel.setLocation(employee.getJSONObject("description").getString("text"));
-                                eventModel.setDate(employee.getJSONObject("start").getString("timezone"));
-                                eventModel.setTime(employee.getJSONObject("start").getString("local"));
-                                eventModel.setThumbnailUrl(employee.getJSONObject("logo").getString("url"));
-
-                                // adding movie to movies array
-                                eventModelList.add(eventModel);
-
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        // notifying list adapter about data changes
-                        // so that it renders the list view with updated data
-                        adapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                hidePDialog();
-
-            }
-        });
-
-
-
-
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(eventReq);
     }
 
 
 
-
+    public void URLBuilder(){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("https")
+                .authority("www.eventbriteapi.com")
+                .appendPath("v3")
+                .appendPath("events")
+                .appendPath("search")
+                .appendQueryParameter("location.latitude", latitude1)
+                .appendQueryParameter("location.longitude", longitude1)
+                .appendQueryParameter("token", "IULJK3QH2256C6ARBMQR");
+        myUrl = builder.build().toString();
+    }
 
     @Override
     public void onDestroy() {
@@ -177,6 +132,54 @@ public class EventsInMyArea extends AppCompatActivity {
         }
     }
 
+
+    private void PullFromEventBright(){
+
+        // Creating volley request obj //my current issue is that this won't run
+        JsonObjectRequest eventReq = new JsonObjectRequest(Request.Method.GET, myUrl,null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, response.toString());
+                hidePDialog();
+
+                try {
+                    JSONArray jsonArray = response.getJSONArray("events");
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        JSONObject event = jsonArray.getJSONObject(i); //something goes wrong here, i think its possibly with the size of the reading
+                        EventModel eventModel = new EventModel();
+                        eventModel.setTitle(event.getJSONObject("name").getString("text"));
+                        // eventModel.setLocation(employee.getJSONObject("description").getString("text"));
+                        eventModel.setDate(event.getJSONObject("start").getString("timezone"));
+                        eventModel.setTime(event.getJSONObject("start").getString("local"));
+                        eventModel.setThumbnailUrl(event.getJSONObject("logo").getString("url"));
+
+                        // adding event to events array
+                        eventModelList.add(eventModel);
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                // notifying list adapter about data changes
+                // so that it renders the list view with updated data
+                adapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                hidePDialog();
+
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(eventReq);
+    }
 
 
 
