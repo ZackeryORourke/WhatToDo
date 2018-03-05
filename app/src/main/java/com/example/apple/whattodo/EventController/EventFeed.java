@@ -66,6 +66,9 @@ public class EventFeed extends Activity {
 
         List<String> userPreferances = EventCard.getPreferanceId();
 
+        String preferenceId = String.valueOf(EventCard.getPreferanceId());
+        //deletes the first two and the end two characters
+        preferenceId = preferenceId.substring(1, preferenceId.length() - 1);
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
@@ -73,13 +76,13 @@ public class EventFeed extends Activity {
                 .appendPath("v3")
                 .appendPath("events")
                 .appendPath("search")
-                .appendQueryParameter("categories", String.valueOf(userPreferances))//need to call the id variable from here )
+                .appendQueryParameter("categories", preferenceId)//need to call the id variable from here )
                 .appendQueryParameter("token", "IULJK3QH2256C6ARBMQR");
         myUrl = builder.build().toString();
         JsonObjectRequest eventReq =
                 new JsonObjectRequest(
                         Request.Method.GET,
-                        url,null,       //this is where the application is currently crashing
+                        myUrl,null,       //this is where the application is currently crashing
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {

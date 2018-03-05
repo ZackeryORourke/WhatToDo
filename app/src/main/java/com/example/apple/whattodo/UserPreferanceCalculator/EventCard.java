@@ -142,8 +142,9 @@ public class EventCard {
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         likeEvent=true;
-        DatabaseReference myRef = database.getReference("UserPreference"+"---"+category.getName()+"---"+eventId.getEventId());
-        myRef.setValue(auth.getUid()+category.getName()+"---"+likeEvent+"---");
+        DatabaseReference myRef = database.getReference("UserPreference"+"---"+category.getName()+"---");
+       // myRef.setValue(auth.getUid()+category.getName()+"---"+likeEvent+"---");
+        myRef.setValue(eventId.getEventId());
         //
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
@@ -151,7 +152,7 @@ public class EventCard {
         // myRef.setValue(likeEvent=true);
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("message");
+        //myRef = database.getReference("message");
         myRef.setValue(eventId.getEventId());
         // Read from the database
         myRef.addValueEventListener(new ValueEventListener() {
@@ -162,21 +163,15 @@ public class EventCard {
                 String value = dataSnapshot.getValue(String.class);
 
                 //add the value to the list so I can build the preference variable to search on android Api
-                preferanceId.add(value);
-                Log.d(TAG, String.valueOf(preferanceId));
-
-                //Save the users Preferance Id to drive
-                StringBuilder stringBuilder = new StringBuilder();
-                for(String s : preferanceId){
-                    stringBuilder.append(s);
-                    stringBuilder.append(",");
+                //If the Id does not exist, then add that to preference Id
+                if (!preferanceId.contains(value)) {
+                    preferanceId.add(value);
+                    //add in the comma beetween each for the Url functionality
+                    //preferanceId.add(",");
 
                 }
 
-
-
             }
-
 
 
 
