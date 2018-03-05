@@ -3,6 +3,7 @@ package com.example.apple.whattodo.EventController;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,11 +16,19 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.apple.whattodo.R;
+import com.example.apple.whattodo.UserPreferanceCalculator.EventCard;
+import com.example.apple.whattodo.UserPreferanceCalculator.Profile;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,24 +42,40 @@ public class EventFeed extends Activity {
     private ProgressDialog pDialog;
     private List<EventModel> eventModelList = new ArrayList<EventModel>();
     private ListView listView;
+    public String myUrl;
     private CustomListAdapter adapter;
+    private Profile eventId;
+
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("UserPreferance");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_feed);
-
         listView = (ListView) findViewById(R.id.list);
         adapter = new CustomListAdapter(this, eventModelList);
         listView.setAdapter((ListAdapter) adapter);
-
         pDialog = new ProgressDialog(this);
         // Showing progress dialog before making http request
         pDialog.setMessage("Loading...");
         pDialog.show();
+        // This will get my user preferances
 
 
-        // Creating volley request obj
+        List<String> userPreferances = EventCard.getPreferanceId();
+
+
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("https")
+                .authority("www.eventbriteapi.com")
+                .appendPath("v3")
+                .appendPath("events")
+                .appendPath("search")
+                .appendQueryParameter("categories", String.valueOf(userPreferances))//need to call the id variable from here )
+                .appendQueryParameter("token", "IULJK3QH2256C6ARBMQR");
+        myUrl = builder.build().toString();
         JsonObjectRequest eventReq =
                 new JsonObjectRequest(
                         Request.Method.GET,
@@ -70,7 +95,7 @@ public class EventFeed extends Activity {
                                         EventModel eventModel = new EventModel();
                                         eventModel.setTitle(event.getJSONObject("name").getString("text"));
                                         // eventModel.setLocation(employee.getJSONObject("description").getString("text"));
-                                        eventModel.setDate(event.getJSONObject("start").getString("timezone"));
+                                        //eventModel.setDate(event.getJSONObject("start").getString("timezone"));
                                         eventModel.setTime(event.getJSONObject("start").getString("local"));
                                         eventModel.setThumbnailUrl(event.getJSONObject("logo").getString("url"));
 
@@ -98,6 +123,8 @@ public class EventFeed extends Activity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(eventReq);
+
+
     }
 
     @Override

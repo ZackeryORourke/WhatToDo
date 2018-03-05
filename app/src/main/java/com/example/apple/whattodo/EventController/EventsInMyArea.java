@@ -151,7 +151,7 @@ public class EventsInMyArea extends AppCompatActivity {
                         EventModel eventModel = new EventModel();
                         eventModel.setTitle(event.getJSONObject("name").getString("text"));
                         // eventModel.setLocation(employee.getJSONObject("description").getString("text"));
-                        eventModel.setDate(event.getJSONObject("start").getString("timezone"));
+                       // eventModel.setDate(event.getJSONObject("start").getString("timezone"));
                         eventModel.setTime(event.getJSONObject("start").getString("local"));
                         eventModel.setThumbnailUrl(event.getJSONObject("logo").getString("url"));
 

@@ -1,6 +1,8 @@
 package com.example.apple.whattodo.UserPreferanceCalculator;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,8 +11,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
 import com.example.apple.whattodo.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;
@@ -23,13 +28,20 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOut;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 import com.mindorks.placeholderview.annotations.swipe.SwipeView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
+import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
 
 
 @Layout(R.layout.event_card_view)
 public class EventCard {
+
+
 
     @View(R.id.profileImageView)
     private ImageView profileImageView;
@@ -41,10 +53,17 @@ public class EventCard {
     private android.view.View cardView;
     private FirebaseAuth auth;
     private Profile category;
+    private Profile eventId;
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
     private boolean likeEvent ;
     private int swipeCounter=0 ;
+    public static ArrayList<String> preferanceId  = new ArrayList<String>();
+
+
+    public static ArrayList<String> getPreferanceId() {
+        return preferanceId;
+    }
 
     public EventCard(
             //userId int,
@@ -53,6 +72,7 @@ public class EventCard {
             SwipePlaceHolderView swipeView) {
         mContext = context;
         category = profile;
+        eventId = profile;
         mSwipeView = swipeView;
     }
 
@@ -70,6 +90,7 @@ public class EventCard {
                 .bitmapTransform(multi)
                 .into(profileImageView);
         nameAgeTxt.setText(category.getName());
+        eventId.setEventId(eventId.getEventId());
     }
 
     @SwipeHead
@@ -81,12 +102,6 @@ public class EventCard {
                 .into(profileImageView);
         cardView.invalidate();
     }
-
-//    @Click(R.id.profileImageView)
-//    private void onClick(){
-//        Log.d("EVENT", "profileImageView click");
-////        mSwipeView.addView(this);
-//    }
 
     @SwipeOut
     private void onSwipedOut(){
@@ -104,11 +119,11 @@ public class EventCard {
         //          function that handles the response (ok, notOk)
 
         // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        likeEvent=false;
-        DatabaseReference myRef = database.getReference(category.getName()+"---"+likeEvent);
-        myRef.setValue(auth.getUid());
 
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        likeEvent=false;
+//        DatabaseReference myRef = database.getReference(category.getName()+"---"+likeEvent);
+//        myRef.setValue(auth.getUid());
 
 
 
@@ -122,15 +137,55 @@ public class EventCard {
 
     @SwipeIn
     private void onSwipeIn(){
+        //I figured that I only need to know if they like the event
         Log.d("EVENT", "onSwipedIn");
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         likeEvent=true;
-        DatabaseReference myRef = database.getReference(category.getName()+"---"+likeEvent);
-        myRef.setValue(auth.getUid());
-       // myRef.setValue(likeEvent=true);
+        DatabaseReference myRef = database.getReference("UserPreference"+"---"+category.getName()+"---"+eventId.getEventId());
+        myRef.setValue(auth.getUid()+category.getName()+"---"+likeEvent+"---");
+        //
+        // Write a message to the database
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("UserPreferenceSports & Fitness108");
+        // myRef.setValue(likeEvent=true);
+        // Write a message to the database
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("message");
+        myRef.setValue(eventId.getEventId());
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+
+                //add the value to the list so I can build the preference variable to search on android Api
+                preferanceId.add(value);
+                Log.d(TAG, String.valueOf(preferanceId));
+
+                //Save the users Preferance Id to drive
+                StringBuilder stringBuilder = new StringBuilder();
+                for(String s : preferanceId){
+                    stringBuilder.append(s);
+                    stringBuilder.append(",");
+
+                }
 
 
+
+            }
+
+
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
 
         ;
     }
@@ -145,12 +200,10 @@ public class EventCard {
     }
 
 
+
     @SwipeOutState
     private void onSwipeOutState(){
         Log.d("EVENT", "onSwipeOutState");
     }
 }
 
-
-//accept is swipe in
-//reject is swipe out
