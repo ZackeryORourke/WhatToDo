@@ -50,10 +50,15 @@ public class SwipeActivity extends AppCompatActivity {
                         .setSwipeOutMsgLayoutId(R.layout.event_swipe_out_msg_view));
 
 
-        for(Profile profile : Utils.loadProfiles(this.getApplicationContext())){
+
+
+        for(Profile profile : Utils.loadProfiles(this.getApplicationContext()))
+
+
+        {
+
             mSwipeView.addView(new EventCard(
-                    //firebaseAuth.getCurrentUser().getUid(),
-                    mContext, profile, mSwipeView));
+                    mContext, profile,  mSwipeView));
         }
 
         findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
@@ -77,6 +82,8 @@ public class SwipeActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,8 +1,6 @@
 package com.example.apple.whattodo.UserPreferanceCalculator;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,30 +33,28 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static android.content.ContentValues.TAG;
-import static android.content.Context.MODE_PRIVATE;
 
 
 @Layout(R.layout.event_card_view)
 public class EventCard {
 
 
-
     @View(R.id.profileImageView)
     private ImageView profileImageView;
 
     @View(R.id.nameAgeTxt)
-    private TextView nameAgeTxt;
+    private TextView eventName;
 
     @SwipeView
     private android.view.View cardView;
     private FirebaseAuth auth;
-    private Profile category;
+    private Profile profile;
     private Profile eventId;
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
-    private boolean likeEvent ;
-    private int swipeCounter=0 ;
-    public static ArrayList<String> preferanceId  = new ArrayList<String>();
+    private boolean likeEvent;
+    private int swipeCounter = 0;
+    public static ArrayList<String> preferanceId = new ArrayList<String>();
 
 
     public static ArrayList<String> getPreferanceId() {
@@ -66,18 +62,18 @@ public class EventCard {
     }
 
     public EventCard(
-            //userId int,
             Context context,
             Profile profile,
             SwipePlaceHolderView swipeView) {
         mContext = context;
-        category = profile;
+        this.profile = profile;
         eventId = profile;
         mSwipeView = swipeView;
     }
 
+
     @Resolve
-    private void onResolved(){
+    private void onResolved1() {
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
         MultiTransformation multi = new MultiTransformation(
@@ -86,16 +82,21 @@ public class EventCard {
                         mContext, Utils.dpToPx(7), 0,
                         RoundedCornersTransformation.CornerType.TOP));
 
-        Glide.with(mContext).load(category.getImageUrl())
+        Glide.with(mContext).load(profile.getImageUrl())
                 .bitmapTransform(multi)
                 .into(profileImageView);
-        nameAgeTxt.setText(category.getName());
-        eventId.setEventId(eventId.getEventId());
+        eventName.setText(profile.getName());
+//        eventId.setEventId(eventId.getEventId());
+
     }
+
+
 
     @SwipeHead
     private void onSwipeHeadCard() {
-        Glide.with(mContext).load(category.getImageUrl())
+
+
+        Glide.with(mContext).load(profile.getImageUrl())
                 .bitmapTransform(new RoundedCornersTransformation(
                         mContext, Utils.dpToPx(7), 0,
                         RoundedCornersTransformation.CornerType.TOP))
@@ -103,63 +104,48 @@ public class EventCard {
         cardView.invalidate();
     }
 
+
     @SwipeOut
-    private void onSwipedOut(){
+    private void onSwipedOut() {
         Log.d("EVENT", "onSwipedOut");
-//        mSwipeView.addView(this);
-        // save to db that user does not like this category:
-        //User is the owner of the device
-        //you can "inject" the id of user, becasue its theonly thing you need
-        //app.post(userId, this.category, wantsThis);
-        //use the following method to make the above:
-//        new JsonObjectRequest(
-//                Request.Method.GET,
-//                url,
-//                { userId: userId, categoryId, this.category.Id, wantsThis},
-        //          function that handles the response (ok, notOk)
-
-        // Write a message to the database
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        likeEvent=false;
-//        DatabaseReference myRef = database.getReference(category.getName()+"---"+likeEvent);
-//        myRef.setValue(auth.getUid());
-
-
 
 
     }
 
     @SwipeCancelState
-    private void onSwipeCancelState(){
+    private void onSwipeCancelState() {
         Log.d("EVENT", "onSwipeCancelState");
     }
 
     @SwipeIn
-    private void onSwipeIn(){
-        //I figured that I only need to know if they like the event
+    private void onSwipeIn() {
+
+        eventId.setEventId(eventId.getEventId());
         Log.d("EVENT", "onSwipedIn");
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        likeEvent=true;
-        DatabaseReference myRef = database.getReference("UserPreference"+"---"+category.getName()+"---");
-       // myRef.setValue(auth.getUid()+category.getName()+"---"+likeEvent+"---");
+        //likeEvent=true;
+        DatabaseReference myRef = database.getReference("UserPreference" + "---" + profile.getName() + "---");
+        // myRef.setValue(auth.getUid()+category.getName()+"---"+likeEvent+"---");
         myRef.setValue(eventId.getEventId());
-        //
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("UserPreferenceSports & Fitness108");
-        // myRef.setValue(likeEvent=true);
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
-        //myRef = database.getReference("message");
         myRef.setValue(eventId.getEventId());
-        // Read from the database
+
+
+
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
+                //Trying to refresh the view
+
+
+
                 String value = dataSnapshot.getValue(String.class);
 
                 //add the value to the list so I can build the preference variable to search on android Api
@@ -169,10 +155,35 @@ public class EventCard {
                     //add in the comma beetween each for the Url functionality
                     //preferanceId.add(",");
 
+
                 }
 
-            }
+                //load the sub categories until they have selected what they want
 
+                List<SubProfile> subProfiles = profile.getSubcategory();
+                for (SubProfile sp : subProfiles) {
+                    String id = sp.getEventId();
+                    String name = sp.getName();
+                    String url = sp.getUrl();
+                   // eventName.setText(name);
+
+                    MultiTransformation multi = new MultiTransformation(
+                            new BlurTransformation(mContext, 30),
+                            new RoundedCornersTransformation(
+                                    mContext, Utils.dpToPx(7), 0,
+                                    RoundedCornersTransformation.CornerType.TOP));
+
+                    Glide.with(mContext).load(profile.getImageUrl())
+                            .bitmapTransform(multi)
+                            .into(profileImageView);
+                    eventName.setText(name);
+
+                }
+
+
+
+
+            }
 
 
             @Override
@@ -185,20 +196,22 @@ public class EventCard {
         ;
     }
 
+
     @SwipeInState
-    private void onSwipeInState(){
+    private void onSwipeInState() {
 
         Log.d("EVENT", "onSwipeInState");
+
 
 
         ;
     }
 
 
-
     @SwipeOutState
-    private void onSwipeOutState(){
+    private void onSwipeOutState() {
         Log.d("EVENT", "onSwipeOutState");
     }
+
 }
 

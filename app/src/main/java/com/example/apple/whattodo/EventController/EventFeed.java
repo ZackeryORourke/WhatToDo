@@ -3,10 +3,12 @@ package com.example.apple.whattodo.EventController;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -18,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.apple.whattodo.R;
 import com.example.apple.whattodo.UserPreferanceCalculator.EventCard;
 import com.example.apple.whattodo.UserPreferanceCalculator.Profile;
+import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,6 +82,9 @@ public class EventFeed extends Activity {
                 .appendQueryParameter("categories", preferenceId)//need to call the id variable from here )
                 .appendQueryParameter("token", "IULJK3QH2256C6ARBMQR");
         myUrl = builder.build().toString();
+        myUrl = myUrl.replaceAll("%20","");
+
+
         JsonObjectRequest eventReq =
                 new JsonObjectRequest(
                         Request.Method.GET,
@@ -143,11 +149,38 @@ public class EventFeed extends Activity {
         }
     }
 
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        switch (item.getItemId()){
+
+            case R.id.feed:
+                Intent feedIntent = new Intent(this, EventFeed.class);
+                this.startActivity(feedIntent);
+                return true;
+
+
+
+
+            case R.id.locationFeed:
+                Intent areaIntent = new Intent(this, EventsInMyArea.class);
+                this.startActivity(areaIntent);
+                return true;
+
+
+            case R.id.swipeView:
+                Intent swipeIntent = new Intent(this, SwipeActivity.class);
+                this.startActivity(swipeIntent);
+                return true;
+
+
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
+
 
 }

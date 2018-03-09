@@ -3,6 +3,8 @@ package com.example.apple.whattodo.UserPreferanceCalculator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 
 public class Profile {
 
@@ -17,6 +19,15 @@ public class Profile {
     @SerializedName("eventId")
     @Expose
     private String eventId;
+
+    @SerializedName("subcategory")
+    @Expose
+    private List<SubProfile> subcategory;
+
+    public List<SubProfile> getSubcategory() {
+        return subcategory;
+    }
+
 
     public String getEventId() {
         return eventId;
@@ -38,6 +49,7 @@ public class Profile {
     public String getImageUrl() {
         return imageUrl;
     }
+
 
 
 

@@ -20,9 +20,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by janisharali on 21/08/16.
- */
 public class Utils {
 
     private static final String TAG = "Utils";
@@ -31,18 +28,20 @@ public class Utils {
         try{
             GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();
-            JSONArray array = new JSONArray(loadJSONFromAsset(context, "profiles.json"));
+            JSONArray array = new JSONArray(loadJSONFromAsset(context, "preferances.json"));
             List<Profile> profileList = new ArrayList<>();
             for(int i=0;i<array.length();i++){
                 Profile profile = gson.fromJson(array.getString(i), Profile.class);
                 profileList.add(profile);
             }
+
             return profileList;
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }
     }
+
 
     private static String loadJSONFromAsset(Context context, String jsonFileName) {
         String json = null;
