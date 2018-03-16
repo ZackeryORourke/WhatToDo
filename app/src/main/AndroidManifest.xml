@@ -32,6 +32,7 @@
         <activity android:name=".EventController.EventFeed" />
         <activity android:name=".EventController.EventsInMyArea"></activity>
         <activity android:name=".UserPreferanceCalculator.SwipeActivity"></activity>
+        <activity android:name=".EventController.EventIndexActivity"></activity>
     </application>
 
 </manifest>

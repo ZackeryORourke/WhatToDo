@@ -2,17 +2,12 @@ package com.example.apple.whattodo.UserPreferanceCalculator;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
-import com.example.apple.whattodo.AccountActivity.LoginActivity;
-import com.example.apple.whattodo.AccountActivity.RegisterActivity;
-import com.example.apple.whattodo.AccountActivity.ResetPasswordActivity;
-import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -42,7 +37,7 @@ import static android.content.ContentValues.TAG;
 
 
 @Layout(R.layout.event_card_view)
-public class EventCard extends AppCompatActivity {
+public class SubEventCard {
 
 
     @View(R.id.profileImageView)
@@ -67,7 +62,7 @@ public class EventCard extends AppCompatActivity {
         return preferanceId;
     }
 
-    public EventCard (
+    public SubEventCard(
             Context context,
             Profile profile,
             SwipePlaceHolderView swipeView) {
@@ -80,19 +75,30 @@ public class EventCard extends AppCompatActivity {
 
     @Resolve
     private void onResolved1() {
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
-        MultiTransformation multi = new MultiTransformation(
-                new BlurTransformation(mContext, 30),
-                new RoundedCornersTransformation(
-                        mContext, Utils.dpToPx(7), 0,
-                        RoundedCornersTransformation.CornerType.TOP));
 
-        Glide.with(mContext).load(profile.getImageUrl())
-                .bitmapTransform(multi)
-                .into(profileImageView);
-        eventName.setText(profile.getName());
+
+        List<SubProfile> subProfiles = profile.getSubcategory();
+        for (SubProfile sp : subProfiles) {
+            String id = sp.getEventId();
+            String name = sp.getName();
+            String url = sp.getUrl();
+
+            //Get Firebase auth instance
+            auth = FirebaseAuth.getInstance();
+            MultiTransformation multi = new MultiTransformation(
+                    new BlurTransformation(mContext, 30),
+                    new RoundedCornersTransformation(
+                            mContext, Utils.dpToPx(7), 0,
+                            RoundedCornersTransformation.CornerType.TOP));
+
+            Glide.with(mContext).load(url)
+                    .bitmapTransform(multi)
+                    .into(profileImageView);
+            eventName.setText(name);
 //        eventId.setEventId(eventId.getEventId());
+
+
+        }
 
 
     }
@@ -119,8 +125,6 @@ public class EventCard extends AppCompatActivity {
 
     }
 
-
-
     @SwipeCancelState
     private void onSwipeCancelState() {
         Log.d("EVENT", "onSwipeCancelState");
@@ -144,7 +148,8 @@ public class EventCard extends AppCompatActivity {
         myRef.setValue(eventId.getEventId());
 
 
-        final FirebaseDatabase finalDatabase = database;
+
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -173,13 +178,11 @@ public class EventCard extends AppCompatActivity {
                     String id = sp.getEventId();
                     String name = sp.getName();
                     String url = sp.getUrl();
-                    DatabaseReference myPrefRef = finalDatabase.getReference("UserPrefString");
-                    myPrefRef.setValue(preferanceId);
+
+
 
                 }
 
-
-             //   startActivity(new Intent(EventCard.this, SubEventCard.class));
 
 
 

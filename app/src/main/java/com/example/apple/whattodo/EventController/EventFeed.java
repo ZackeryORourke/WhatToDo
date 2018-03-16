@@ -6,17 +6,23 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.EventLog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.apple.whattodo.AccountActivity.LoginActivity;
+import com.example.apple.whattodo.AccountActivity.RegisterActivity;
 import com.example.apple.whattodo.R;
 import com.example.apple.whattodo.UserPreferanceCalculator.EventCard;
 import com.example.apple.whattodo.UserPreferanceCalculator.Profile;
@@ -83,7 +89,8 @@ public class EventFeed extends Activity {
                 .appendQueryParameter("token", "IULJK3QH2256C6ARBMQR");
         myUrl = builder.build().toString();
         myUrl = myUrl.replaceAll("%20","");
-
+        myUrl = myUrl.replaceAll("%2C%20",",");
+        myUrl = myUrl.replaceAll("%2C","");
 
         JsonObjectRequest eventReq =
                 new JsonObjectRequest(
@@ -132,6 +139,24 @@ public class EventFeed extends Activity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(eventReq);
+
+
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent i = new Intent(EventFeed.this,EventIndexActivity.class);
+                i.putExtra("ValueKey", eventModelList.get(position).getTitle());
+                i.putExtra("ValueKey2", eventModelList.get(position).getTime());
+                i.putExtra("ValueKey3", eventModelList.get(position).getLocation());
+                i.putExtra("ValueKey4", eventModelList.get(position).getThumbnailUrl());
+
+                startActivity(i);
+
+            }
+        });
+
 
 
     }

@@ -18,6 +18,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import com.android.volley.Request;
@@ -26,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.apple.whattodo.R;
+import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -102,6 +106,58 @@ public class EventsInMyArea extends AppCompatActivity {
                         }
                     }
                 });
+
+
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent i = new Intent(EventsInMyArea.this,EventIndexActivity.class);
+                i.putExtra("ValueKey", eventModelList.get(position).getTitle());
+                i.putExtra("ValueKey2", eventModelList.get(position).getTime());
+                i.putExtra("ValueKey3", eventModelList.get(position).getLocation());
+                i.putExtra("ValueKey4", eventModelList.get(position).getThumbnailUrl());
+
+                startActivity(i);
+
+            }
+        });
+
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        switch (item.getItemId()){
+
+            case R.id.feed:
+                Intent feedIntent = new Intent(this, EventFeed.class);
+                this.startActivity(feedIntent);
+                return true;
+
+
+
+
+            case R.id.locationFeed:
+                Intent areaIntent = new Intent(this, EventsInMyArea.class);
+                this.startActivity(areaIntent);
+                return true;
+
+
+            case R.id.swipeView:
+                Intent swipeIntent = new Intent(this, SwipeActivity.class);
+                this.startActivity(swipeIntent);
+                return true;
+
+
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

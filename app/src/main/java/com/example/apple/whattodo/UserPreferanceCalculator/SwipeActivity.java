@@ -61,6 +61,8 @@ public class SwipeActivity extends AppCompatActivity {
                     mContext, profile,  mSwipeView));
         }
 
+
+
         findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +84,7 @@ public class SwipeActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 
