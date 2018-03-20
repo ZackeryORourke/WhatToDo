@@ -1,6 +1,7 @@
 package com.example.apple.whattodo.AccountActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +12,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.apple.whattodo.EventController.EventFeed;
 import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
+import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -24,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
+    //Give your SharedPreferences file a name and save it to a static variable
+    public static final String PREFS_NAME = "MyPrefsFile";
 
 
     @Override
@@ -98,10 +103,14 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    //todo: store the id below in a session so it becomes accessible by tinderSwiper
-                                    String userId = auth.getCurrentUser().getUid();
+
+
+
+
+//                                    Intent intent = new Intent(LoginActivity.this, EventFeed.class);
+//                                    startActivity(intent);
+//                                    //todo: store the id below in a session so it becomes accessible
+//                                    String userId = auth.getCurrentUser().getUid();
                                     finish();
                                 }
                             }

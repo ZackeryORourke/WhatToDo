@@ -269,6 +269,12 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(swipeIntent);
                 return true;
 
+            case R.id.userMenu:
+                Intent userIntent = new Intent(this, MainActivity.class);
+                this.startActivity(userIntent);
+                return true;
+
+
 
 
 

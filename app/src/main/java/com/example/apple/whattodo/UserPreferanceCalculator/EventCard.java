@@ -133,15 +133,14 @@ public class EventCard extends AppCompatActivity {
         Log.d("EVENT", "onSwipedIn");
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //likeEvent=true;
-        DatabaseReference myRef = database.getReference("UserPreference" + "---" + profile.getName() + "---");
-        // myRef.setValue(auth.getUid()+category.getName()+"---"+likeEvent+"---");
-        myRef.setValue(eventId.getEventId());
+        DatabaseReference myRef = database.getReference("ID" +FirebaseAuth.getInstance().getUid()+profile.getName());
+       // myRef.setValue(auth.getUid()+category.getName()+"---"+likeEvent+"---");
+        myRef.setValue(eventId.getEventId()+profile.getName());
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
         // Write a message to the database
-        database = FirebaseDatabase.getInstance();
-        myRef.setValue(eventId.getEventId());
+//        database = FirebaseDatabase.getInstance();
+//        myRef.setValue(eventId.getEventId());
 
 
         final FirebaseDatabase finalDatabase = database;
@@ -168,15 +167,15 @@ public class EventCard extends AppCompatActivity {
                 //load the sub categories until they have selected what they want
                 //My issue here is that the sub categories require the screen to be reloaded
 
-                List<SubProfile> subProfiles = profile.getSubcategory();
-                for (SubProfile sp : subProfiles) {
-                    String id = sp.getEventId();
-                    String name = sp.getName();
-                    String url = sp.getUrl();
-                    DatabaseReference myPrefRef = finalDatabase.getReference("UserPrefString");
-                    myPrefRef.setValue(preferanceId);
-
-                }
+//                List<SubProfile> subProfiles = profile.getSubcategory();
+//                for (SubProfile sp : subProfiles) {
+//                    String id = sp.getEventId();
+//                    String name = sp.getName();
+//                    String url = sp.getUrl();
+//                    DatabaseReference myPrefRef = finalDatabase.getReference("UserPrefString");
+//                    myPrefRef.setValue(preferanceId);
+//
+//                }
 
 
              //   startActivity(new Intent(EventCard.this, SubEventCard.class));

@@ -1,11 +1,14 @@
 package com.example.apple.whattodo.UserPreferanceCalculator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.content.Context;
@@ -15,6 +18,8 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 
+import com.example.apple.whattodo.EventController.EventFeed;
+import com.example.apple.whattodo.EventController.EventsInMyArea;
 import com.example.apple.whattodo.R;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
@@ -87,11 +92,37 @@ public class SwipeActivity extends AppCompatActivity {
 
 
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_menu, menu);
+        return true;
+    }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.feed:
+                Intent feedIntent = new Intent(this, EventFeed.class);
+                this.startActivity(feedIntent);
+                return true;
+
+
+            case R.id.locationFeed:
+                Intent areaIntent = new Intent(this, EventsInMyArea.class);
+                this.startActivity(areaIntent);
+                return true;
+
+
+            case R.id.swipeView:
+                Intent swipeIntent = new Intent(this, SwipeActivity.class);
+                this.startActivity(swipeIntent);
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
+import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -92,7 +93,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+
+
+                                    startActivity(new Intent(RegisterActivity.this, SwipeActivity.class));
                                     finish();
                                 }
                             }

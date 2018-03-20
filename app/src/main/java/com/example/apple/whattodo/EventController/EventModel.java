@@ -6,17 +6,20 @@ public class EventModel {
     private String title,location;
     private String date, time;
     private String thumbnailUrl;
+    private String url;
     private Integer[] imgid;
     public EventModel(){
 
     }
 
-    public EventModel(String title,  String location, String date, String time,String thumbnailUrl) {
+
+    public EventModel(String title, String location, String date, String time, String thumbnailUrl, String url) {
         this.title = title;
         this.thumbnailUrl = thumbnailUrl;
         this.location = location;
         this.date = date;
         this.time = time;
+        this.url = url;
 
     }
 
@@ -59,6 +62,15 @@ public class EventModel {
     public void setTime(String time) {
         this.time = time;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
 
 
 }

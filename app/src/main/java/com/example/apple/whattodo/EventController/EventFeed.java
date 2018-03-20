@@ -1,14 +1,21 @@
 package com.example.apple.whattodo.EventController;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.support.v4.app.ActivityCompat;
 import android.util.EventLog;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +30,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.apple.whattodo.AccountActivity.LoginActivity;
 import com.example.apple.whattodo.AccountActivity.RegisterActivity;
+import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
 import com.example.apple.whattodo.UserPreferanceCalculator.EventCard;
 import com.example.apple.whattodo.UserPreferanceCalculator.Profile;
@@ -40,6 +48,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class EventFeed extends Activity {
@@ -54,6 +63,7 @@ public class EventFeed extends Activity {
     public String myUrl;
     private CustomListAdapter adapter;
     private Profile eventId;
+    private String time, title;
 
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -62,6 +72,7 @@ public class EventFeed extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.event_feed);
         listView = (ListView) findViewById(R.id.list);
         adapter = new CustomListAdapter(this, eventModelList);
@@ -88,14 +99,14 @@ public class EventFeed extends Activity {
                 .appendQueryParameter("categories", preferenceId)//need to call the id variable from here )
                 .appendQueryParameter("token", "IULJK3QH2256C6ARBMQR");
         myUrl = builder.build().toString();
-        myUrl = myUrl.replaceAll("%20","");
-        myUrl = myUrl.replaceAll("%2C%20",",");
-        myUrl = myUrl.replaceAll("%2C","");
+        myUrl = myUrl.replaceAll("%20", "");
+        myUrl = myUrl.replaceAll("%2C%20", ",");
+        myUrl = myUrl.replaceAll("%2C", "");
 
         JsonObjectRequest eventReq =
                 new JsonObjectRequest(
                         Request.Method.GET,
-                        myUrl,null,       //this is where the application is currently crashing
+                        myUrl, null,       //this is where the application is currently crashing
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -110,6 +121,7 @@ public class EventFeed extends Activity {
                                         JSONObject event = jsonArray.getJSONObject(i); //something goes wrong here, i think its possibly with the size of the reading
                                         EventModel eventModel = new EventModel();
                                         eventModel.setTitle(event.getJSONObject("name").getString("text"));
+                                        eventModel.setUrl(event.getString("url"));
                                         // eventModel.setLocation(employee.getJSONObject("description").getString("text"));
                                         //eventModel.setDate(event.getJSONObject("start").getString("timezone"));
                                         eventModel.setTime(event.getJSONObject("start").getString("local"));
@@ -146,17 +158,19 @@ public class EventFeed extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent i = new Intent(EventFeed.this,EventIndexActivity.class);
+                Intent i = new Intent(EventFeed.this, EventIndexActivity.class);
                 i.putExtra("ValueKey", eventModelList.get(position).getTitle());
                 i.putExtra("ValueKey2", eventModelList.get(position).getTime());
                 i.putExtra("ValueKey3", eventModelList.get(position).getLocation());
                 i.putExtra("ValueKey4", eventModelList.get(position).getThumbnailUrl());
+                i.putExtra("ValueKey5", eventModelList.get(position).getUrl());
 
                 startActivity(i);
+                time = eventModelList.get(position).getTime();
+                title = eventModelList.get(position).getTitle();
 
             }
         });
-
 
 
     }
@@ -175,17 +189,21 @@ public class EventFeed extends Activity {
     }
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_menu, menu);
+        return true;
+    }
 
-        switch (item.getItemId()){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
 
             case R.id.feed:
                 Intent feedIntent = new Intent(this, EventFeed.class);
                 this.startActivity(feedIntent);
                 return true;
-
-
 
 
             case R.id.locationFeed:
@@ -199,6 +217,12 @@ public class EventFeed extends Activity {
                 this.startActivity(swipeIntent);
                 return true;
 
+            case R.id.userMenu:
+                Intent userIntent = new Intent(this, MainActivity.class);
+                this.startActivity(userIntent);
+                return true;
+
+
 
 
 
@@ -207,5 +231,6 @@ public class EventFeed extends Activity {
         }
     }
 
-
 }
+
+

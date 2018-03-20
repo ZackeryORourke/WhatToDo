@@ -118,6 +118,7 @@ public class EventsInMyArea extends AppCompatActivity {
                 i.putExtra("ValueKey2", eventModelList.get(position).getTime());
                 i.putExtra("ValueKey3", eventModelList.get(position).getLocation());
                 i.putExtra("ValueKey4", eventModelList.get(position).getThumbnailUrl());
+                i.putExtra("ValueKey5", eventModelList.get(position).getUrl());
 
                 startActivity(i);
 
@@ -206,6 +207,7 @@ public class EventsInMyArea extends AppCompatActivity {
                         JSONObject event = jsonArray.getJSONObject(i); //something goes wrong here, i think its possibly with the size of the reading
                         EventModel eventModel = new EventModel();
                         eventModel.setTitle(event.getJSONObject("name").getString("text"));
+                        eventModel.setUrl(event.getString("url"));
                         // eventModel.setLocation(employee.getJSONObject("description").getString("text"));
                        // eventModel.setDate(event.getJSONObject("start").getString("timezone"));
                         eventModel.setTime(event.getJSONObject("start").getString("local"));
