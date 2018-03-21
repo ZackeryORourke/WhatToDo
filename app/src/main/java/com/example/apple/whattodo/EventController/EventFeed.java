@@ -35,6 +35,7 @@ import com.example.apple.whattodo.R;
 import com.example.apple.whattodo.UserPreferanceCalculator.EventCard;
 import com.example.apple.whattodo.UserPreferanceCalculator.Profile;
 import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,34 +62,73 @@ public class EventFeed extends Activity {
     private List<EventModel> eventModelList = new ArrayList<EventModel>();
     private ListView listView;
     public String myUrl;
+    private FirebaseAuth auth;
     private CustomListAdapter adapter;
     private Profile eventId;
     private String time, title;
+    public static String preferanceId = new String();
 
+    public static void setPreferanceId(String preferanceId) {
+        EventFeed.preferanceId = preferanceId;
+    }
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("UserPreferance");
+    public static String getPreferanceId() {
+        return preferanceId;
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.event_feed);
         listView = (ListView) findViewById(R.id.list);
         adapter = new CustomListAdapter(this, eventModelList);
         listView.setAdapter((ListAdapter) adapter);
         pDialog = new ProgressDialog(this);
         // Showing progress dialog before making http request
-        pDialog.setMessage("Loading...");
+        pDialog.setMessage("Loading Your Preferences...");
         pDialog.show();
-        // This will get my user preferances
+        firstMethod();
+//        secondMethod();
+    }
+
+    public void firstMethod() {
+
+        // Get a reference to our posts
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Preference Logs " + FirebaseAuth.getInstance().getUid());
 
 
-        List<String> userPreferances = EventCard.getPreferanceId();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> ids = new ArrayList<>();
+                StringBuilder stringBuilder = new StringBuilder();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    ids.add(dataSnapshot1.getValue(String.class));
+                }
+                for (int i = 0; i < ids.size(); i++) {
+                    if (i != 0) {
+                        stringBuilder.append(",");
+                    }
+                    stringBuilder.append(ids.get(i));
+                }
+                String aa = stringBuilder.toString();
+                secondMethod(aa);
+            }
 
-        String preferenceId = String.valueOf(EventCard.getPreferanceId());
-        //deletes the first two and the end two characters
-        preferenceId = preferenceId.substring(1, preferenceId.length() - 1);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                String error = databaseError.getMessage();
+            }
+        });
+
+
+    }
+
+
+    public void secondMethod(String ids) {
+
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
@@ -96,17 +136,15 @@ public class EventFeed extends Activity {
                 .appendPath("v3")
                 .appendPath("events")
                 .appendPath("search")
-                .appendQueryParameter("categories", preferenceId)//need to call the id variable from here )
+                .appendQueryParameter("categories", ids)//need to call the id variable from here )
                 .appendQueryParameter("token", "IULJK3QH2256C6ARBMQR");
         myUrl = builder.build().toString();
-        myUrl = myUrl.replaceAll("%20", "");
-        myUrl = myUrl.replaceAll("%2C%20", ",");
-        myUrl = myUrl.replaceAll("%2C", "");
+        myUrl = myUrl.replaceAll(",200", "");
 
         JsonObjectRequest eventReq =
                 new JsonObjectRequest(
                         Request.Method.GET,
-                        myUrl, null,       //this is where the application is currently crashing
+                        myUrl, null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -122,8 +160,6 @@ public class EventFeed extends Activity {
                                         EventModel eventModel = new EventModel();
                                         eventModel.setTitle(event.getJSONObject("name").getString("text"));
                                         eventModel.setUrl(event.getString("url"));
-                                        // eventModel.setLocation(employee.getJSONObject("description").getString("text"));
-                                        //eventModel.setDate(event.getJSONObject("start").getString("timezone"));
                                         eventModel.setTime(event.getJSONObject("start").getString("local"));
                                         eventModel.setThumbnailUrl(event.getJSONObject("logo").getString("url"));
 
@@ -136,8 +172,6 @@ public class EventFeed extends Activity {
                                     e.printStackTrace();
                                 }
 
-                                // notifying list adapter about data changes
-                                // so that it renders the list view with updated data
                                 adapter.notifyDataSetChanged();
                             }
                         }, new Response.ErrorListener() {
@@ -221,9 +255,6 @@ public class EventFeed extends Activity {
                 Intent userIntent = new Intent(this, MainActivity.class);
                 this.startActivity(userIntent);
                 return true;
-
-
-
 
 
             default:

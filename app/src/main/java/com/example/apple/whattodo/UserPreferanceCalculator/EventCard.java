@@ -133,16 +133,9 @@ public class EventCard extends AppCompatActivity {
         Log.d("EVENT", "onSwipedIn");
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("ID" +FirebaseAuth.getInstance().getUid()+profile.getName());
-       // myRef.setValue(auth.getUid()+category.getName()+"---"+likeEvent+"---");
-        myRef.setValue(eventId.getEventId()+profile.getName());
-        // Write a message to the database
+        DatabaseReference myRef = database.getReference("ID" +FirebaseAuth.getInstance().getUid());
+        myRef.setValue(eventId.getEventId());
         database = FirebaseDatabase.getInstance();
-        // Write a message to the database
-//        database = FirebaseDatabase.getInstance();
-//        myRef.setValue(eventId.getEventId());
-
-
         final FirebaseDatabase finalDatabase = database;
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -158,11 +151,24 @@ public class EventCard extends AppCompatActivity {
                 //If the Id does not exist, then add that to preference Id
                 if (!preferanceId.contains(value)) {
                     preferanceId.add(value);
-                    //add in the comma beetween each for the Url functionality
-                    //preferanceId.add(",");
+
+                    if (value.equals("200")) {
+                        //In Here add the preference Id to the database when the Id is 200 because this marks the end
+                        // On top of that, then bring the user our of the application -
+                        // Write a message to the database
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myPref = database.getReference("Preference Logs "+ auth.getUid());
+
+                        myPref.setValue(preferanceId);
+
+                    }
+
+
 
 
                 }
+
+
 
                 //load the sub categories until they have selected what they want
                 //My issue here is that the sub categories require the screen to be reloaded
