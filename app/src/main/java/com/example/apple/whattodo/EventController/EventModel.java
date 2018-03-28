@@ -6,6 +6,7 @@ public class EventModel {
     private String title,location;
     private String date, time;
     private String thumbnailUrl;
+    private String description;
     private String url;
     private Integer[] imgid;
     public EventModel(){
@@ -13,12 +14,14 @@ public class EventModel {
     }
 
 
-    public EventModel(String title, String location, String date, String time, String thumbnailUrl, String url) {
+    public EventModel(String title, String location, String date, String time, String description, String thumbnailUrl, String url) {
         this.title = title;
         this.thumbnailUrl = thumbnailUrl;
         this.location = location;
         this.date = date;
         this.time = time;
+        this.description = description;
+
         this.url = url;
 
     }
@@ -71,6 +74,14 @@ public class EventModel {
         this.url = url;
     }
 
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 
 }

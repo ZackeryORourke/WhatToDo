@@ -1,18 +1,11 @@
 package com.example.apple.whattodo.EventController;
 
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.support.v4.app.ActivityCompat;
-import android.util.EventLog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,18 +14,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.apple.whattodo.AccountActivity.LoginActivity;
-import com.example.apple.whattodo.AccountActivity.RegisterActivity;
 import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
-import com.example.apple.whattodo.UserPreferanceCalculator.EventCard;
 import com.example.apple.whattodo.UserPreferanceCalculator.Profile;
 import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,17 +29,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
-
-
 public class EventFeed extends Activity {
     // Log tag
     private static final String TAG = EventFeed.class.getSimpleName();
@@ -159,6 +141,7 @@ public class EventFeed extends Activity {
                                         JSONObject event = jsonArray.getJSONObject(i); //something goes wrong here, i think its possibly with the size of the reading
                                         EventModel eventModel = new EventModel();
                                         eventModel.setTitle(event.getJSONObject("name").getString("text"));
+                                       // eventModel.setDescription(event.getJSONObject("description").getString("text"));
                                         eventModel.setUrl(event.getString("url"));
                                         eventModel.setTime(event.getJSONObject("start").getString("local"));
                                         eventModel.setThumbnailUrl(event.getJSONObject("logo").getString("url"));
@@ -198,6 +181,7 @@ public class EventFeed extends Activity {
                 i.putExtra("ValueKey3", eventModelList.get(position).getLocation());
                 i.putExtra("ValueKey4", eventModelList.get(position).getThumbnailUrl());
                 i.putExtra("ValueKey5", eventModelList.get(position).getUrl());
+                i.putExtra("ValueKey6", eventModelList.get(position).getDescription());
 
                 startActivity(i);
                 time = eventModelList.get(position).getTime();

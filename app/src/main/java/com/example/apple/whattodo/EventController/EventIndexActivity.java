@@ -4,6 +4,7 @@ package com.example.apple.whattodo.EventController;
         import android.content.Intent;
         import android.net.Uri;
         import android.os.Bundle;
+        import android.provider.CalendarContract;
         import android.support.v7.app.AppCompatActivity;
         import android.view.LayoutInflater;
         import android.view.Menu;
@@ -19,6 +20,8 @@ package com.example.apple.whattodo.EventController;
         import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
         import com.squareup.picasso.Picasso;
 
+        import java.util.GregorianCalendar;
+
 
 public class EventIndexActivity extends AppCompatActivity {
 
@@ -32,11 +35,12 @@ public class EventIndexActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eventindexactivity);
         Intent intent = getIntent();
-        String eventtitle = intent.getExtras().getString("ValueKey");
+        final String eventtitle = intent.getExtras().getString("ValueKey");
         String eventtime = intent.getExtras().getString("ValueKey2");
-        String eventLocation = intent.getExtras().getString("ValueKey3");
+        final String eventLocation = intent.getExtras().getString("ValueKey3");
         String eventImage = intent.getExtras().getString("ValueKey4");
         final String eventUrl = intent.getExtras().getString("ValueKey5");
+        final String eventDescription = intent.getExtras().getString("ValueKey6");
 
 
         ImageView image = (ImageView) findViewById(R.id.thumbnail);
@@ -74,7 +78,20 @@ public class EventIndexActivity extends AppCompatActivity {
         calender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(EventIndexActivity.this, EventFeed.class));
+                Intent calIntent = new Intent(Intent.ACTION_INSERT);
+                calIntent.setData(CalendarContract.Events.CONTENT_URI);
+                calIntent.putExtra(CalendarContract.Events.TITLE, eventtitle);
+                calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, eventLocation);
+               calIntent.putExtra(CalendarContract.Events.DESCRIPTION, eventDescription);
+
+
+                GregorianCalendar calDate = new GregorianCalendar(2012, 7, 15);
+              //  calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+                calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                        calDate.getTimeInMillis());
+                calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                        calDate.getTimeInMillis());
+                startActivity(calIntent);
             }
         });
 

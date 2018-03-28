@@ -12,6 +12,8 @@ import com.bumptech.glide.load.MultiTransformation;
 import com.example.apple.whattodo.AccountActivity.LoginActivity;
 import com.example.apple.whattodo.AccountActivity.RegisterActivity;
 import com.example.apple.whattodo.AccountActivity.ResetPasswordActivity;
+import com.example.apple.whattodo.EventController.EventFeed;
+import com.example.apple.whattodo.EventController.EventIndexActivity;
 import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -143,10 +145,7 @@ public class EventCard extends AppCompatActivity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 //Trying to refresh the view
-
-
                 String value = dataSnapshot.getValue(String.class);
-
                 //add the value to the list so I can build the preference variable to search on android Api
                 //If the Id does not exist, then add that to preference Id
                 if (!preferanceId.contains(value)) {
@@ -158,12 +157,14 @@ public class EventCard extends AppCompatActivity {
                         // Write a message to the database
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myPref = database.getReference("Preference Logs "+ auth.getUid());
-
                         myPref.setValue(preferanceId);
 
+
+
+
+
+
                     }
-
-
 
 
                 }

@@ -119,6 +119,7 @@ public class EventsInMyArea extends AppCompatActivity {
                 i.putExtra("ValueKey3", eventModelList.get(position).getLocation());
                 i.putExtra("ValueKey4", eventModelList.get(position).getThumbnailUrl());
                 i.putExtra("ValueKey5", eventModelList.get(position).getUrl());
+                i.putExtra("ValueKey6", eventModelList.get(position).getDescription());
 
                 startActivity(i);
 
@@ -208,8 +209,8 @@ public class EventsInMyArea extends AppCompatActivity {
                         EventModel eventModel = new EventModel();
                         eventModel.setTitle(event.getJSONObject("name").getString("text"));
                         eventModel.setUrl(event.getString("url"));
-                        // eventModel.setLocation(employee.getJSONObject("description").getString("text"));
-                       // eventModel.setDate(event.getJSONObject("start").getString("timezone"));
+                       // eventModel.setLocation(event.getJSONObject("description").getString("text"));
+                        eventModel.setDate(event.getJSONObject("start").getString("timezone"));
                         eventModel.setTime(event.getJSONObject("start").getString("local"));
                         eventModel.setThumbnailUrl(event.getJSONObject("logo").getString("url"));
 
