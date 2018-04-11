@@ -5,14 +5,13 @@
     <permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-
-
-
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <permission android:name="android.permission.ACCESS_COURSE_LOCATION" />
 
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
     <application
         android:name=".EventController.AppController"
         android:allowBackup="true"
@@ -32,9 +31,14 @@
         <activity android:name=".AccountActivity.RegisterActivity" />
         <activity android:name=".AccountActivity.ResetPasswordActivity" />
         <activity android:name=".EventController.EventFeed" />
-        <activity android:name=".EventController.EventsInMyArea"></activity>
-        <activity android:name=".UserPreferanceCalculator.SwipeActivity"></activity>
-        <activity android:name=".EventController.EventIndexActivity"></activity>
+        <activity android:name=".EventController.EventsInMyArea" />
+        <activity android:name=".UserPreferanceCalculator.SwipeActivity" />
+        <activity android:name=".EventController.EventIndexActivity" />
+        <activity android:name=".ChatApplication.ChatMain"></activity>
+        <activity android:name=".ChatApplication.EventChatRoom"></activity>
+
+
+
     </application>
 
 </manifest>

@@ -18,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
 import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -130,37 +133,7 @@ public class EventsInMyArea extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
 
-        switch (item.getItemId()){
-
-            case R.id.feed:
-                Intent feedIntent = new Intent(this, EventFeed.class);
-                this.startActivity(feedIntent);
-                return true;
-
-
-
-
-            case R.id.locationFeed:
-                Intent areaIntent = new Intent(this, EventsInMyArea.class);
-                this.startActivity(areaIntent);
-                return true;
-
-
-            case R.id.swipeView:
-                Intent swipeIntent = new Intent(this, SwipeActivity.class);
-                this.startActivity(swipeIntent);
-                return true;
-
-
-
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 
 
@@ -190,6 +163,45 @@ public class EventsInMyArea extends AppCompatActivity {
         }
     }
 
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.feed:
+                Intent feedIntent = new Intent(this, EventFeed.class);
+                this.startActivity(feedIntent);
+                return true;
+
+
+            case R.id.locationFeed:
+                Intent areaIntent = new Intent(this, EventsInMyArea.class);
+                this.startActivity(areaIntent);
+                return true;
+
+
+            case R.id.swipeView:
+                Intent swipeIntent = new Intent(this, SwipeActivity.class);
+                this.startActivity(swipeIntent);
+                return true;
+
+            case R.id.userMenu:
+                Intent userIntent = new Intent(this, MainActivity.class);
+                this.startActivity(userIntent);
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     private void PullFromEventBright(){
 
@@ -239,6 +251,8 @@ public class EventsInMyArea extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(eventReq);
     }
+
+
 
 
 

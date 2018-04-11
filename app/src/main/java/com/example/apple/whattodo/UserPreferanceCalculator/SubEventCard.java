@@ -214,10 +214,13 @@ public class SubEventCard {
 
 
 
+
     @SwipeOutState
     private void onSwipeOutState() {
         Log.d("EVENT", "onSwipeOutState");
     }
 
 }
+
+
 

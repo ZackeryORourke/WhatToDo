@@ -25,4 +25,10 @@
         />
 
 
+    <item
+        android:id="@+id/ChatRoom"
+        android:title="Chat"
+        />
+
+
 </menu>

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.apple.whattodo.AccountActivity.LoginActivity;
 import com.example.apple.whattodo.AccountActivity.RegisterActivity;
+import com.example.apple.whattodo.ChatApplication.ChatMain;
 import com.example.apple.whattodo.EventController.EventFeed;
 import com.example.apple.whattodo.EventController.EventsInMyArea;
 import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
@@ -273,6 +274,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent userIntent = new Intent(this, MainActivity.class);
                 this.startActivity(userIntent);
                 return true;
+
+            case R.id.ChatRoom:
+                Intent chatRoom = new Intent(this, ChatMain.class);
+                this.startActivity(chatRoom);
+                return true;
+
 
 
 

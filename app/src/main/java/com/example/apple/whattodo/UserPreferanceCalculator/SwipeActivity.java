@@ -20,6 +20,7 @@ import android.view.View;
 
 import com.example.apple.whattodo.EventController.EventFeed;
 import com.example.apple.whattodo.EventController.EventsInMyArea;
+import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
@@ -118,6 +119,11 @@ public class SwipeActivity extends AppCompatActivity {
             case R.id.swipeView:
                 Intent swipeIntent = new Intent(this, SwipeActivity.class);
                 this.startActivity(swipeIntent);
+                return true;
+
+            case R.id.userMenu:
+                Intent userIntent = new Intent(this, MainActivity.class);
+                this.startActivity(userIntent);
                 return true;
 
 

@@ -199,6 +199,11 @@ public class EventFeed extends Activity {
         hidePDialog();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
     private void hidePDialog() {
         if (pDialog != null) {
             pDialog.dismiss();

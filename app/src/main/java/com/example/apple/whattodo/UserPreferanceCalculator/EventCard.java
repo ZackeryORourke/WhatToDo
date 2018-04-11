@@ -63,6 +63,7 @@ public class EventCard extends AppCompatActivity {
     private boolean likeEvent;
     private int swipeCounter = 0;
     public static ArrayList<String> preferanceId = new ArrayList<String>();
+    private boolean eventCardsEnd = false;
 
 
     public static ArrayList<String> getPreferanceId() {
@@ -111,12 +112,21 @@ public class EventCard extends AppCompatActivity {
                         RoundedCornersTransformation.CornerType.TOP))
                 .into(profileImageView);
         cardView.invalidate();
+        if ( eventCardsEnd= true){
+
+        }
+
+
+
+
     }
 
 
     @SwipeOut
     private void onSwipedOut() {
         Log.d("EVENT", "onSwipedOut");
+
+
 
 
     }
@@ -153,11 +163,16 @@ public class EventCard extends AppCompatActivity {
 
                     if (value.equals("200")) {
                         //In Here add the preference Id to the database when the Id is 200 because this marks the end
-                        // On top of that, then bring the user our of the application -
+                        // On top of thauat, then bring the user our of the application -
                         // Write a message to the database
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myPref = database.getReference("Preference Logs "+ auth.getUid());
                         myPref.setValue(preferanceId);
+                        Intent intent = new Intent(mContext, EventFeed.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        mContext.startActivity(intent);
+
 
 
 
@@ -198,8 +213,6 @@ public class EventCard extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-
-        ;
     }
 
 
@@ -208,10 +221,6 @@ public class EventCard extends AppCompatActivity {
 
         Log.d("EVENT", "onSwipeInState");
 
-
-
-
-        ;
     }
 
 
