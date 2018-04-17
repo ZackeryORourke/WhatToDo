@@ -1,6 +1,8 @@
 package com.example.apple.whattodo.ChatApplication;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -46,6 +48,7 @@ public class ChatMain extends AppCompatActivity {
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list_of_events = new ArrayList<>();
+    private String name;
 
 
     @Override
@@ -56,6 +59,12 @@ public class ChatMain extends AppCompatActivity {
         eventChatRoom= (EditText) findViewById(R.id.eventRoomChat);
         listView = (ListView) findViewById(R.id.chatRoomList);
         arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list_of_events);
+
+        requeserUserName();
+
+
+
+
         listView.setAdapter(arrayAdapter);
 
         final FirebaseUser currentFireballUser = FirebaseAuth.getInstance().getCurrentUser() ;
@@ -107,10 +116,40 @@ public class ChatMain extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(),EventChatRoom.class);
                 intent.putExtra("EventRoomName",((TextView)view).getText().toString());
-                intent.putExtra("UserName", String.valueOf(currentFireballUser));
+                intent.putExtra("UserName", name);
                 startActivity(intent);
             }
         });
+
+
+
+
+
+
+    }
+
+    private void requeserUserName() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(("Please Enter A Nick Name"));
+        final EditText input_field = new EditText(this);
+        builder.setView(input_field);
+        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                name = input_field.getText().toString();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+                requeserUserName();
+            }
+        });
+
+        builder.show();
 
 
 

@@ -24,7 +24,7 @@ public class EventChatRoom extends AppCompatActivity {
 
     private Button sendMessage;
     private EditText chatEditText;
-    private TextView chatConversation;
+    private EditText chatConversation;
     private String userName, roomName;
     private String temp_key;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Chats");
@@ -37,37 +37,34 @@ public class EventChatRoom extends AppCompatActivity {
 
         sendMessage = (Button) findViewById(R.id.sendButton);
         chatEditText = (EditText) findViewById(R.id.editTextMessage);
-        chatConversation = (TextView) findViewById(R.id.chatConversation);
+        chatConversation = (EditText) findViewById(R.id.chatConversation);
 
 
         //Grab the intents
 
         userName = getIntent().getExtras().get("UserName").toString();
         roomName = getIntent().getExtras().get("EventRoomName").toString();
-        setTitle("Event Room  "+roomName);
+        setTitle("Event Room  " + roomName);
 
         root = FirebaseDatabase.getInstance().getReference(roomName);
 
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map<String,Object> map = new HashMap<String,Object>();
+                Map<String, Object> map = new HashMap<String, Object>();
                 temp_key = root.push().getKey();
                 root.updateChildren(map);
 
                 DatabaseReference message_root = root.child(temp_key);
-                Map<String,Object> map2 = new HashMap<String, Object>();
+                Map<String, Object> map2 = new HashMap<String, Object>();
                 map2.put("Name", userName);
-                map2.put("Message",chatEditText.getText().toString());
+                map2.put("Message", chatEditText.getText().toString());
 
                 message_root.updateChildren(map2);
 
 
-
-
             }
         });
-
 
 
         root.addChildEventListener(new ChildEventListener() {
@@ -100,23 +97,23 @@ public class EventChatRoom extends AppCompatActivity {
         });
 
 
-
-
-
-
     }
 
 
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
 
         Iterator i = dataSnapshot.getChildren().iterator();
+//        String msg = chatConversation.getText().toString();
+        while (i.hasNext()) {
+            chat_msg = (String) ((DataSnapshot) i.next()).getValue();
+            chat_user_name = (String) ((DataSnapshot) i.next()).getValue();
+//            msg = msg + System.getProperty("line.separator") + chat_user_name + "  :  " + chat_msg;
+            chatConversation.append(chat_user_name+"  :  " + chat_msg + System.getProperty("line.separator"));
 
-        while(i.hasNext()){
-            chat_msg = (String) ((DataSnapshot)i.next()).getValue();
-            chat_user_name = (String) ((DataSnapshot)i.next()).getValue();
-            chatConversation.append(chat_user_name+"  :  " + chat_msg + " \n");
+            chatEditText.setText("");
 
         }
+//        chatConversation.setText(msg);
     }
 
 

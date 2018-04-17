@@ -4,12 +4,12 @@
 
     <Button
         android:id="@+id/sendButton"
-        android:layout_width="339dp"
-        android:layout_height="78dp"
+        android:layout_width="332dp"
+        android:layout_height="132dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="14dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginEnd="7dp"
         android:text="Send" />
 
     <EditText
@@ -21,34 +21,27 @@
         android:layout_marginBottom="21dp"
         android:ems="10"
         android:hint="Message"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textSize="30dp" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_width="600dp"
+        android:layout_height="800dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="19dp">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="63dp"
-            android:layout_marginTop="318dp"
-            android:orientation="vertical" />
     </ScrollView>
 
-    <TextView
+    <EditText
         android:id="@+id/chatConversation"
-        android:layout_width="569dp"
-        android:layout_height="67dp"
-        android:layout_alignParentStart="true"
+        android:layout_width="516dp"
+        android:layout_height="766dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="62dp"
-        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="57dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        />
+        android:inputType="textMultiLine"
+        android:textSize="20dp"
+        android:editable="true"/>
 </RelativeLayout>
