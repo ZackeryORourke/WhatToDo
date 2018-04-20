@@ -1,5 +1,6 @@
 package com.example.apple.whattodo.ChatApplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,11 +41,26 @@ public class EventChatRoom extends AppCompatActivity {
         chatEditText = (EditText) findViewById(R.id.editTextMessage);
         chatConversation = (EditText) findViewById(R.id.chatConversation);
 
+        // Read from the database
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Username");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+               userName = dataSnapshot.getValue(String.class);
+            }
 
-        //Grab the intents
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
 
-        userName = getIntent().getExtras().get("UserName").toString();
-        roomName = getIntent().getExtras().get("EventRoomName").toString();
+        Intent intent = getIntent();
+        roomName = intent.getExtras().getString("ValueKey");
         setTitle("Event Room  " + roomName);
 
         root = FirebaseDatabase.getInstance().getReference(roomName);

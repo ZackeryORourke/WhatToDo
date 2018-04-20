@@ -15,6 +15,8 @@ package com.example.apple.whattodo.EventController;
         import android.widget.ImageView;
         import android.widget.TextView;
 
+        import com.example.apple.whattodo.ChatApplication.ChatMain;
+        import com.example.apple.whattodo.ChatApplication.EventChatRoom;
         import com.example.apple.whattodo.MainActivity;
         import com.example.apple.whattodo.R;
         import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
@@ -61,8 +63,6 @@ public class EventIndexActivity extends AppCompatActivity {
         calender = (Button) findViewById(R.id.add_Calender);
         notifications = (Button) findViewById(R.id.notify_Me);
         purchaseTickets = (Button) findViewById(R.id.purchase);
-
-
         title.setText(eventtitle);
         time.setText(eventtime);
         location.setText(eventLocation);
@@ -83,10 +83,7 @@ public class EventIndexActivity extends AppCompatActivity {
                 calIntent.putExtra(CalendarContract.Events.TITLE, eventtitle);
                 calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, eventLocation);
                calIntent.putExtra(CalendarContract.Events.DESCRIPTION, eventDescription);
-
-
                 GregorianCalendar calDate = new GregorianCalendar(2012, 7, 15);
-              //  calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
                 calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                         calDate.getTimeInMillis());
                 calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
@@ -99,7 +96,10 @@ public class EventIndexActivity extends AppCompatActivity {
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(EventIndexActivity.this, EventFeed.class));
+                Intent i = new Intent(EventIndexActivity.this,EventChatRoom.class);
+                i.putExtra("ValueKey", eventtitle);
+                startActivity(i);
+
             }
         });
 

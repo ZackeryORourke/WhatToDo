@@ -55,6 +55,8 @@ public class ChatMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_main);
+        Intent intent = getIntent();
+        final String eventtitle = intent.getExtras().getString("ValueKey");
         addChatRoom =(Button) findViewById(R.id.addRoomButton);
         eventChatRoom= (EditText) findViewById(R.id.eventRoomChat);
         listView = (ListView) findViewById(R.id.chatRoomList);
@@ -67,10 +69,10 @@ public class ChatMain extends AppCompatActivity {
 
         listView.setAdapter(arrayAdapter);
 
-        final FirebaseUser currentFireballUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
 
-        //Crashes right here
+
+
         addChatRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
