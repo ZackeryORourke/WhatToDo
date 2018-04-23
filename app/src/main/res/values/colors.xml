@@ -6,7 +6,7 @@
 
     <color name="bg_login">#bbadd9</color>
     <color name="bg_register">#b5cdec</color>
-    <color name="bg_main">#428bca</color>
+    <color name="bg_main">#844e84</color>
     <color name="white">#ffffff</color>
     <color name="input_login">#222222</color>
     <color name="input_login_hint">#999999</color>
@@ -19,5 +19,7 @@
     <color name="btn_logut_bg">#ff6861</color>
     <color name="black">#ff6861</color>
     <color name="grey">#e5e5e5</color>
+
+
 
 </resources>

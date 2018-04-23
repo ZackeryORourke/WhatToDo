@@ -1,29 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    >
 
-
-    <Button
-        android:id="@+id/sendButton"
-        android:layout_width="268dp"
-        android:layout_height="118dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="119dp"
-        android:layout_marginEnd="32dp"
-        android:text="Send" />
-
-    <EditText
-        android:id="@+id/editTextMessage"
-        android:layout_width="463dp"
-        android:layout_height="190dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="61dp"
-        android:ems="10"
-        android:hint="Message"
-        android:inputType="textPersonName"
-        android:textSize="30dp" />
 
     <ScrollView
         android:layout_width="600dp"
@@ -36,13 +15,50 @@
 
     <EditText
         android:id="@+id/chatConversation"
-        android:layout_width="516dp"
-        android:layout_height="766dp"
+        android:layout_width="445dp"
+        android:layout_height="694dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="57dp"
+        android:background="@color/colorAccent"
+        android:clickable="false"
+        android:cursorVisible="false"
         android:ems="10"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:inputType="textMultiLine"
-        android:textSize="20dp"
-        android:editable="true"/>
+        android:selectAllOnFocus="false"
+        android:textAlignment="viewStart"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+      >
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="268dp"
+        android:layout_height="118dp"
+        android:layout_alignBottom="@+id/editTextMessage"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="34dp"
+        android:background="@color/colorAccent"
+        android:text="Send" />
+
+    <EditText
+        android:id="@+id/editTextMessage"
+        android:layout_width="458dp"
+        android:layout_height="145dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="61dp"
+        android:ems="10"
+        android:hint="Message"
+        android:inputType="textPersonName"
+        android:textSize="30dp" />
+
+    </RelativeLayout>
 </RelativeLayout>

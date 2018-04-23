@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="18dp"
+    android:paddingRight="18dp"
     tools:context="com.example.apple.whattodo.AccountActivity.LoginActivity"
     android:background="@drawable/background">
 
@@ -11,22 +13,14 @@
         android:layout_height="fill_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
-
-
-        <ImageView
-            android:layout_width="@dimen/logo_w_h"
-            android:layout_height="@dimen/logo_w_h"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="30dp"
-            android:src="@drawable/eventsbackground"
-            android:contentDescription=""
-            tools:ignore="ContentDescription" />
+        android:padding="@dimen/activity_horizontal_margin"
+        tools:layout_editor_absoluteX="18dp"
+        tools:layout_editor_absoluteY="18dp">
 
 
         <EditText
             android:id="@+id/email"
-            android:layout_width="match_parent"
+            android:layout_width="372dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="@string/hint_email"
@@ -35,11 +29,10 @@
             android:textColorHint="@android:color/black" />
 
 
-
         <EditText
             android:id="@+id/password"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="372dp"
+            android:layout_height="71dp"
             android:layout_marginBottom="10dp"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
@@ -53,23 +46,23 @@
             android:id="@+id/btn_login"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:textStyle="bold"
             android:layout_marginTop="20dip"
             android:background="@drawable/rounded_button"
             android:text="@string/btn_login"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btn_reset_password"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textStyle="bold"
             android:layout_marginTop="20dip"
             android:background="@drawable/rounded_button"
             android:text="Forgot Password"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
         <!-- Link to Login Screen -->
 

@@ -72,7 +72,7 @@ public class CustomListAdapter extends BaseAdapter {
         title.setText(m.getTitle());
         //location.setText(m.getLocation());
         date.setText(m.getDate());
-        time.setText(m.getTime());
+        //time.setText(m.getTime());
 
         return convertView;
     }

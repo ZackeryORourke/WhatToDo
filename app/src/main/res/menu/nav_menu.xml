@@ -25,9 +25,10 @@
         />
 
 
+
     <item
-        android:id="@+id/ChatRoom"
-        android:title="Chat"
+        android:id="@+id/chatRoom"
+        android:title="My conversations"
         />
 
 

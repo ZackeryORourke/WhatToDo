@@ -62,15 +62,8 @@ public class ChatMain extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.chatRoomList);
         arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list_of_events);
 
-        requeserUserName();
-
-
-
 
         listView.setAdapter(arrayAdapter);
-
-
-
 
 
         addChatRoom.setOnClickListener(new View.OnClickListener() {
@@ -116,10 +109,10 @@ public class ChatMain extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(),EventChatRoom.class);
-                intent.putExtra("EventRoomName",((TextView)view).getText().toString());
-                intent.putExtra("UserName", name);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(),EventChatRoom.class);
+//                intent.putExtra("EventRoomName",((TextView)view).getText().toString());
+//                intent.putExtra("UserName", name);
+//                startActivity(intent);
             }
         });
 
@@ -130,35 +123,9 @@ public class ChatMain extends AppCompatActivity {
 
     }
 
-    private void requeserUserName() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(("Please Enter A Nick Name"));
-        final EditText input_field = new EditText(this);
-        builder.setView(input_field);
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                name = input_field.getText().toString();
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-                requeserUserName();
-            }
-        });
-
-        builder.show();
 
 
 
-
-
-
-    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

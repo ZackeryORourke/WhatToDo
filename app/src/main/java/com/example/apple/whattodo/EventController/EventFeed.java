@@ -141,9 +141,12 @@ public class EventFeed extends Activity {
                                         JSONObject event = jsonArray.getJSONObject(i); //something goes wrong here, i think its possibly with the size of the reading
                                         EventModel eventModel = new EventModel();
                                         eventModel.setTitle(event.getJSONObject("name").getString("text"));
-                                       // eventModel.setDescription(event.getJSONObject("description").getString("text"));
                                         eventModel.setUrl(event.getString("url"));
-                                        eventModel.setTime(event.getJSONObject("start").getString("local"));
+                                        // eventModel.setLocation(event.getJSONObject("description").getString("text"));
+                                        eventModel.setDate(event.getJSONObject("start").getString("timezone"));
+                                        String time = event.getJSONObject("start").getString("local");
+                                        time = time.replace("T", "     ");
+                                        eventModel.setTime(time);
                                         eventModel.setThumbnailUrl(event.getJSONObject("logo").getString("url"));
 
                                         // adding event to events array

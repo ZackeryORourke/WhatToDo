@@ -221,9 +221,11 @@ public class EventsInMyArea extends AppCompatActivity {
                         EventModel eventModel = new EventModel();
                         eventModel.setTitle(event.getJSONObject("name").getString("text"));
                         eventModel.setUrl(event.getString("url"));
-                       // eventModel.setLocation(event.getJSONObject("description").getString("text"));
+                        // eventModel.setLocation(event.getJSONObject("description").getString("text"));
                         eventModel.setDate(event.getJSONObject("start").getString("timezone"));
-                        eventModel.setTime(event.getJSONObject("start").getString("local"));
+                        String time = event.getJSONObject("start").getString("local");
+                        time = time.replace("T", "     ");
+                        eventModel.setTime(time);
                         eventModel.setThumbnailUrl(event.getJSONObject("logo").getString("url"));
 
                         // adding event to events array

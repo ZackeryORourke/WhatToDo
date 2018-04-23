@@ -1,8 +1,12 @@
 package com.example.apple.whattodo.ChatApplication;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -31,11 +35,15 @@ public class EventChatRoom extends AppCompatActivity {
     private String temp_key;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Chats");
     private String chat_msg, chat_user_name;
+    private NotificationCompat.Builder notification;
+    private static final int uniqueId= 123456;
 
     @Override
     protected void onCreate(@Nullable Bundle savedIntanceState) {
         super.onCreate(savedIntanceState);
         setContentView(R.layout.event_chat);
+        notification = new NotificationCompat.Builder(this);
+        notification.setAutoCancel(true);
 
         sendMessage = (Button) findViewById(R.id.sendButton);
         chatEditText = (EditText) findViewById(R.id.editTextMessage);
@@ -128,9 +136,22 @@ public class EventChatRoom extends AppCompatActivity {
             chatConversation.append(chat_user_name+"  :  " + chat_msg + System.getProperty("line.separator"));
 
             chatEditText.setText("");
+            notification.setSmallIcon(R.drawable.icon);
+            notification.setTicker("This is the ticker");
+            notification.setWhen(System.currentTimeMillis());
+            notification.setContentTitle("Here is the title");
+            notification.setContentText("I am the body of your notification");
+            Intent intent = new Intent(this,EventChatRoom.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,0, intent , PendingIntent.FLAG_UPDATE_CURRENT);
+            notification.setContentIntent(pendingIntent);
+            //Builds notification and issues it
+            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            nm.notify(uniqueId,notification.build());
+
+
 
         }
-//        chatConversation.setText(msg);
+
     }
 
 

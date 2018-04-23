@@ -125,7 +125,40 @@ public class EventCard extends AppCompatActivity {
     @SwipeOut
     private void onSwipedOut() {
         Log.d("EVENT", "onSwipedOut");
+        eventId.setEventId(eventId.getEventId());
+        Log.d("EVENT", "onSwipedIn");
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("ID" +FirebaseAuth.getInstance().getUid());
+        myRef.setValue(eventId.getEventId());
+        database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase finalDatabase = database;
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                String value = dataSnapshot.getValue(String.class);
+
+                    if (value.equals("200")) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myPref = database.getReference("Preference Logs "+ auth.getUid());
+                        myPref.removeValue();
+                        myPref.setValue(preferanceId);
+                        Intent intent = new Intent(mContext, EventFeed.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        mContext.startActivity(intent);
+                }
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
 
 
 
@@ -167,6 +200,7 @@ public class EventCard extends AppCompatActivity {
                         // Write a message to the database
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myPref = database.getReference("Preference Logs "+ auth.getUid());
+                        myPref.removeValue();
                         myPref.setValue(preferanceId);
                         Intent intent = new Intent(mContext, EventFeed.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

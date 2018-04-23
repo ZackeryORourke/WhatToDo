@@ -275,9 +275,10 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(userIntent);
                 return true;
 
-            case R.id.ChatRoom:
-                Intent chatRoom = new Intent(this, ChatMain.class);
-                this.startActivity(chatRoom);
+
+            case R.id.chatRoom:
+                Intent chatIntent = new Intent(this, ChatMain.class);
+                this.startActivity(chatIntent);
                 return true;
 
 
