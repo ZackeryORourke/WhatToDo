@@ -34,14 +34,14 @@
         <activity android:name=".EventController.EventsInMyArea" />
         <activity android:name=".UserPreferanceCalculator.SwipeActivity" />
         <activity android:name=".EventController.EventIndexActivity" />
-        <activity android:name=".ChatApplication.ChatMain"></activity>
-        <activity android:name=".ChatApplication.EventChatRoom"></activity>
+        <activity android:name=".ChatApplication.ChatMain" />
+        <activity android:name=".ChatApplication.EventChatRoom" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-
+        <activity android:name=".EventController.UsersUpcomingEvents"></activity>
     </application>
 
 </manifest>

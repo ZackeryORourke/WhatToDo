@@ -14,12 +14,17 @@ package com.example.apple.whattodo.EventController;
         import android.widget.Button;
         import android.widget.ImageView;
         import android.widget.TextView;
+        import android.widget.Toast;
 
         import com.example.apple.whattodo.ChatApplication.ChatMain;
         import com.example.apple.whattodo.ChatApplication.EventChatRoom;
         import com.example.apple.whattodo.MainActivity;
         import com.example.apple.whattodo.R;
         import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
+        import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.auth.FirebaseUser;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
         import com.squareup.picasso.Picasso;
 
         import java.util.GregorianCalendar;
@@ -30,6 +35,8 @@ public class EventIndexActivity extends AppCompatActivity {
 
     private TextView title,time, location;
     private Button back,calender, notifications,purchaseTickets;
+    private FirebaseAuth mAuth;
+    private FirebaseUser fbUser;
 
 
     @Override
@@ -38,14 +45,17 @@ public class EventIndexActivity extends AppCompatActivity {
         setContentView(R.layout.eventindexactivity);
         Intent intent = getIntent();
         final String eventtitle = intent.getExtras().getString("ValueKey");
-        String eventtime = intent.getExtras().getString("ValueKey2");
+        final String eventtime = intent.getExtras().getString("ValueKey2");
         final String eventLocation = intent.getExtras().getString("ValueKey3");
-        String eventImage = intent.getExtras().getString("ValueKey4");
+        final String eventImage = intent.getExtras().getString("ValueKey4");
         final String eventUrl = intent.getExtras().getString("ValueKey5");
         final String eventDescription = intent.getExtras().getString("ValueKey6");
 
 
-        ImageView image = (ImageView) findViewById(R.id.thumbnail);
+        mAuth = FirebaseAuth.getInstance();
+        fbUser = mAuth.getCurrentUser();
+
+        final ImageView image = (ImageView) findViewById(R.id.thumbnail);
 
         Picasso.with(this)
                 .load(eventImage)
@@ -106,6 +116,13 @@ public class EventIndexActivity extends AppCompatActivity {
 
         purchaseTickets.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("usersEvents").child(fbUser.getUid());
+                EventModel eventModel = new EventModel(eventtitle, eventLocation,eventtime , eventtime, null, eventImage, null);
+                String eventsId = databaseReference.push().getKey();
+                databaseReference.child(eventsId).setValue(eventModel);
+
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);

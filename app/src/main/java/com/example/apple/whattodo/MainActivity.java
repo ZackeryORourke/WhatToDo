@@ -20,6 +20,7 @@ import com.example.apple.whattodo.AccountActivity.RegisterActivity;
 import com.example.apple.whattodo.ChatApplication.ChatMain;
 import com.example.apple.whattodo.EventController.EventFeed;
 import com.example.apple.whattodo.EventController.EventsInMyArea;
+import com.example.apple.whattodo.EventController.UsersUpcomingEvents;
 import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -279,6 +280,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.chatRoom:
                 Intent chatIntent = new Intent(this, ChatMain.class);
                 this.startActivity(chatIntent);
+                return true;
+
+
+            case R.id.upComingEvents:
+                Intent upcomingEvents = new Intent(this, UsersUpcomingEvents.class);
+                this.startActivity(upcomingEvents);
                 return true;
 
 

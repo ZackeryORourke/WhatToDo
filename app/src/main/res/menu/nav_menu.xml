@@ -31,5 +31,10 @@
         android:title="My conversations"
         />
 
+    <item
+        android:id="@+id/upComingEvents"
+        android:title="My Upcoming Events"
+        />
+
 
 </menu>
