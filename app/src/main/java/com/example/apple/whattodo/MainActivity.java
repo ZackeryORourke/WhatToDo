@@ -107,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +139,40 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Button eventsAroundMe = (Button) findViewById(R.id.eventsAroundMe);
+        eventsAroundMe.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, EventsInMyArea.class));
+
+            }
+        });
+
+        Button myPreferences = (Button) findViewById(R.id.myPreferences);
+        myPreferences.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SwipeActivity.class));
+            }
+        });
+
+        Button eventFeed = (Button) findViewById(R.id.eventFeed);
+        eventFeed.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                startActivity(new Intent(MainActivity.this, EventFeed.class));
+
+            }
+        });
+
+        Button myUpcomingEvents = (Button) findViewById(R.id.myUpcomingEvents);
+        myUpcomingEvents.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                startActivity(new Intent(MainActivity.this, UsersUpcomingEvents.class));
+            }
+        });
+
+
 
 
         btnRemoveUser.setOnClickListener(new View.OnClickListener() {
