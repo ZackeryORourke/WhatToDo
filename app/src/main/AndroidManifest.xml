@@ -37,11 +37,30 @@
         <activity android:name=".ChatApplication.ChatMain" />
         <activity android:name=".ChatApplication.EventChatRoom" />
 
+        <service android:name=".AccountActivity.MyFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".EventController.UsersUpcomingEvents"></activity>
+        <activity android:name=".EventController.UsersUpcomingEvents" />
+
+        <service
+            android:name=".AccountActivity.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+
+
+
+
+        </service>
     </application>
 
 </manifest>

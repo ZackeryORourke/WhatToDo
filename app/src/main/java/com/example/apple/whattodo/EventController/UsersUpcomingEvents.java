@@ -3,11 +3,16 @@ package com.example.apple.whattodo.EventController;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
+import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,7 +55,7 @@ public class UsersUpcomingEvents extends AppCompatActivity {
                 i.putExtra("ValueKey6", eventItems.get(position).getDescription());
 
                 startActivity(i);
-                
+
 
             }
         });
@@ -87,5 +92,54 @@ public class UsersUpcomingEvents extends AppCompatActivity {
         upcomingEvents.addListenerForSingleValueEvent(valueEventListener);
     }
 
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_menu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+
+            case R.id.feed:
+                Intent feedIntent = new Intent(this, EventFeed.class);
+                this.startActivity(feedIntent);
+                return true;
+
+
+            case R.id.locationFeed:
+                Intent areaIntent = new Intent(this, EventsInMyArea.class);
+                this.startActivity(areaIntent);
+                return true;
+
+
+            case R.id.swipeView:
+                Intent swipeIntent = new Intent(this, SwipeActivity.class);
+                this.startActivity(swipeIntent);
+                return true;
+
+            case R.id.userMenu:
+                Intent userIntent = new Intent(this, MainActivity.class);
+                this.startActivity(userIntent);
+                return true;
+
+
+
+            case R.id.upComingEvents:
+                Intent upcomingEvents = new Intent(this, UsersUpcomingEvents.class);
+                this.startActivity(upcomingEvents);
+                return true;
+
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }

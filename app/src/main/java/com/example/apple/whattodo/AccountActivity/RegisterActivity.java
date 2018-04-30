@@ -39,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         btnSignIn = (Button) findViewById(R.id.sign_in_button);
-        btnSignUp = (Button) findViewById(R.id.sign_up_button);
+        btnSignUp = (Button) findViewById(R.id.sign_up_Button);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         inputUserName = (EditText) findViewById(R.id.UserName);
@@ -110,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     //Submit a user name
                                     // Write a message to the database
                                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                    DatabaseReference myRef = database.getReference("Username");
+                                    DatabaseReference myRef = database.getReference("Username"+auth.getCurrentUser().getUid());
 
                                     myRef.setValue(userName);
 

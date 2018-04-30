@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_button"
-            android:text="Purchase Tickers"
+            android:text="Purchase Tickets"
             android:textColor="@android:color/black"
             android:textSize="10sp"
             android:textStyle="bold"></Button>

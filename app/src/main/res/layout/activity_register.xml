@@ -21,56 +21,55 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
             android:contentDescription=""
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/icon"
             tools:ignore="ContentDescription" />
+
 
 
         <EditText
             android:id="@+id/UserName"
-            android:layout_width="match_parent"
+            android:layout_width="372dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:hint="User Name"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColor="@android:color/white" />
-
-
+            android:inputType="textEmailAddress"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/white" />
 
 
         <EditText
             android:id="@+id/email"
-            android:layout_width="match_parent"
+            android:layout_width="372dp"
             android:layout_height="wrap_content"
-            android:hint="@string/email"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:textColor="@android:color/white" />
-
-
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/white" />
 
 
         <EditText
             android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
+            android:layout_width="372dp"
+            android:layout_height="71dp"
+            android:layout_marginBottom="10dp"
             android:hint="@string/hint_password"
-            android:imeActionId="@+id/login"
-            android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
-            android:maxLines="1"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/white" />
 
+
+        <!-- Login Button -->
 
         <Button
-            android:id="@+id/sign_up_button"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
+            android:id="@+id/sign_up_Button"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@color/colorAccent"
-            android:text="@string/action_sign_in_short"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/rounded_button"
+            android:text="Register"
             android:textColor="@android:color/black"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <Button

@@ -91,9 +91,6 @@ public class LoginActivity extends AppCompatActivity {
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
                                     // there was an error
@@ -111,11 +108,17 @@ public class LoginActivity extends AppCompatActivity {
 //                                    startActivity(intent);
 //                                    //todo: store the id below in a session so it becomes accessible
 //                                    String userId = auth.getCurrentUser().getUid();
-                                    finish();
+                                  LoginTheUser();
                                 }
                             }
                         });
             }
         });
+    }
+
+    public void LoginTheUser(){
+        Intent userIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(userIntent);
+
     }
 }

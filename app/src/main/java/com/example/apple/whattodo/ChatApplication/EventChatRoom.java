@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.apple.whattodo.EventController.UsersUpcomingEvents;
 import com.example.apple.whattodo.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,6 +38,7 @@ public class EventChatRoom extends AppCompatActivity {
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Chats");
     private String chat_msg, chat_user_name;
     private NotificationCompat.Builder notification;
+    private FirebaseAuth auth;
     private static final int uniqueId= 123456;
 
     @Override
@@ -51,8 +54,8 @@ public class EventChatRoom extends AppCompatActivity {
 
         // Read from the database
         // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Username");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Username" + FirebaseAuth.getInstance().getUid());
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -136,17 +139,21 @@ public class EventChatRoom extends AppCompatActivity {
             chatConversation.append(chat_user_name+"  :  " + chat_msg + System.getProperty("line.separator"));
 
             chatEditText.setText("");
+
+
             notification.setSmallIcon(R.drawable.icon);
             notification.setTicker("This is the ticker");
             notification.setWhen(System.currentTimeMillis());
-            notification.setContentTitle("Here is the title");
-            notification.setContentText("I am the body of your notification");
-            Intent intent = new Intent(this,EventChatRoom.class);
+            notification.setContentTitle("Chat Notification");
+            notification.setContentText("People are talking in a conversation your in. Why not get involved?");
+            Intent intent = new Intent(this,UsersUpcomingEvents.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(this,0, intent , PendingIntent.FLAG_UPDATE_CURRENT);
             notification.setContentIntent(pendingIntent);
             //Builds notification and issues it
             NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             nm.notify(uniqueId,notification.build());
+
+
 
 
 

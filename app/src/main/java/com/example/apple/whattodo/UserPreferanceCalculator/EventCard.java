@@ -35,7 +35,9 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 import com.mindorks.placeholderview.annotations.swipe.SwipeView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
@@ -126,28 +128,30 @@ public class EventCard extends AppCompatActivity {
     private void onSwipedOut() {
         Log.d("EVENT", "onSwipedOut");
         eventId.setEventId(eventId.getEventId());
-        Log.d("EVENT", "onSwipedIn");
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("ID" +FirebaseAuth.getInstance().getUid());
         myRef.setValue(eventId.getEventId());
         database = FirebaseDatabase.getInstance();
         final FirebaseDatabase finalDatabase = database;
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+
                 String value = dataSnapshot.getValue(String.class);
 
-                    if (value.equals("200")) {
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference myPref = database.getReference("Preference Logs "+ auth.getUid());
-                        myPref.removeValue();
-                        myPref.setValue(preferanceId);
-                        Intent intent = new Intent(mContext, EventFeed.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (value.equals("200")||(value.equals("118"))) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myPref = database.getReference("Preference Logs "+ auth.getUid());
+                    myPref.removeValue();
+                    myPref.setValue(preferanceId);
+                    DatabaseReference myRef = database.getReference("ID" +FirebaseAuth.getInstance().getUid());
+                    myRef.setValue("1");
+                    Intent intent = new Intent(mContext, EventFeed.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                        mContext.startActivity(intent);
+                    mContext.startActivity(intent);
                 }
 
             }
@@ -155,8 +159,7 @@ public class EventCard extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+
             }
         });
 
@@ -182,7 +185,7 @@ public class EventCard extends AppCompatActivity {
         myRef.setValue(eventId.getEventId());
         database = FirebaseDatabase.getInstance();
         final FirebaseDatabase finalDatabase = database;
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -194,7 +197,7 @@ public class EventCard extends AppCompatActivity {
                 if (!preferanceId.contains(value)) {
                     preferanceId.add(value);
 
-                    if (value.equals("200")) {
+                    if (value.equals("200")||(value.equals("118"))) {
                         //In Here add the preference Id to the database when the Id is 200 because this marks the end
                         // On top of thauat, then bring the user our of the application -
                         // Write a message to the database
@@ -202,15 +205,12 @@ public class EventCard extends AppCompatActivity {
                         DatabaseReference myPref = database.getReference("Preference Logs "+ auth.getUid());
                         myPref.removeValue();
                         myPref.setValue(preferanceId);
+                        DatabaseReference myRef = database.getReference("ID" +FirebaseAuth.getInstance().getUid());
+                        myRef.setValue("1");
                         Intent intent = new Intent(mContext, EventFeed.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
                         mContext.startActivity(intent);
-
-
-
-
-
 
 
                     }
@@ -234,7 +234,7 @@ public class EventCard extends AppCompatActivity {
 //                }
 
 
-             //   startActivity(new Intent(EventCard.this, SubEventCard.class));
+                //   startActivity(new Intent(EventCard.this, SubEventCard.class));
 
 
 
@@ -266,4 +266,3 @@ public class EventCard extends AppCompatActivity {
     }
 
 }
-

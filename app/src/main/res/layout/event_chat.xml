@@ -15,8 +15,8 @@
 
     <EditText
         android:id="@+id/chatConversation"
-        android:layout_width="445dp"
-        android:layout_height="694dp"
+        android:layout_width="800dp"
+        android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="57dp"

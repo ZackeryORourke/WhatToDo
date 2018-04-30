@@ -1,11 +1,16 @@
 package com.example.apple.whattodo.EventController;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,17 +29,23 @@ import com.example.apple.whattodo.MainActivity;
 import com.example.apple.whattodo.R;
 import com.example.apple.whattodo.UserPreferanceCalculator.Profile;
 import com.example.apple.whattodo.UserPreferanceCalculator.SwipeActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
 public class EventFeed extends Activity {
     // Log tag
     private static final String TAG = EventFeed.class.getSimpleName();
@@ -48,6 +60,12 @@ public class EventFeed extends Activity {
     private CustomListAdapter adapter;
     private Profile eventId;
     private String time, title;
+    protected LocationManager locationManager;
+    private FusedLocationProviderClient mFusedLocationClient;
+    double longitude;
+    double latitude;
+    String longitude1;
+    String latitude1;
     public static String preferanceId = new String();
 
     public static void setPreferanceId(String preferanceId) {
@@ -63,6 +81,7 @@ public class EventFeed extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_feed);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         listView = (ListView) findViewById(R.id.list);
         adapter = new CustomListAdapter(this, eventModelList);
         listView.setAdapter((ListAdapter) adapter);
@@ -70,8 +89,30 @@ public class EventFeed extends Activity {
         // Showing progress dialog before making http request
         pDialog.setMessage("Loading Your Preferences...");
         pDialog.show();
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+
+            return;
+        }
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+                            longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+                            latitude1 = String.valueOf(location.getLatitude());
+                            longitude1 = String.valueOf(location.getLongitude());
+
+                        }
+                    }
+                });
+
         firstMethod();
-//        secondMethod();
+
     }
 
     public void firstMethod() {
@@ -119,9 +160,12 @@ public class EventFeed extends Activity {
                 .appendPath("events")
                 .appendPath("search")
                 .appendQueryParameter("categories", ids)//need to call the id variable from here )
+                .appendQueryParameter("location.address", 	"Ireland")
                 .appendQueryParameter("token", "IULJK3QH2256C6ARBMQR");
+
         myUrl = builder.build().toString();
         myUrl = myUrl.replaceAll(",200", "");
+        myUrl = myUrl.replaceAll(",1", "");
 
         JsonObjectRequest eventReq =
                 new JsonObjectRequest(
@@ -196,6 +240,8 @@ public class EventFeed extends Activity {
 
     }
 
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -226,6 +272,7 @@ public class EventFeed extends Activity {
 
         switch (item.getItemId()) {
 
+
             case R.id.feed:
                 Intent feedIntent = new Intent(this, EventFeed.class);
                 this.startActivity(feedIntent);
@@ -249,10 +296,19 @@ public class EventFeed extends Activity {
                 return true;
 
 
+
+            case R.id.upComingEvents:
+                Intent upcomingEvents = new Intent(this, UsersUpcomingEvents.class);
+                this.startActivity(upcomingEvents);
+                return true;
+
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 }
 

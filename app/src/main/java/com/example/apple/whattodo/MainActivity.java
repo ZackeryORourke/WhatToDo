@@ -258,8 +258,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
 
-
-
             case R.id.locationFeed:
                 Intent areaIntent = new Intent(this, EventsInMyArea.class);
                 this.startActivity(areaIntent);
@@ -276,11 +274,6 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(userIntent);
                 return true;
 
-
-            case R.id.chatRoom:
-                Intent chatIntent = new Intent(this, ChatMain.class);
-                this.startActivity(chatIntent);
-                return true;
 
 
             case R.id.upComingEvents:

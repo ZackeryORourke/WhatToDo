@@ -175,6 +175,7 @@ public class EventsInMyArea extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
+
             case R.id.feed:
                 Intent feedIntent = new Intent(this, EventFeed.class);
                 this.startActivity(feedIntent);
@@ -196,6 +197,14 @@ public class EventsInMyArea extends AppCompatActivity {
                 Intent userIntent = new Intent(this, MainActivity.class);
                 this.startActivity(userIntent);
                 return true;
+
+
+
+            case R.id.upComingEvents:
+                Intent upcomingEvents = new Intent(this, UsersUpcomingEvents.class);
+                this.startActivity(upcomingEvents);
+                return true;
+
 
 
             default:

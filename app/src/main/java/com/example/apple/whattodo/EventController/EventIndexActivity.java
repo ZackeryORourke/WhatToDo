@@ -157,8 +157,6 @@ public class EventIndexActivity extends AppCompatActivity {
                 return true;
 
 
-
-
             case R.id.locationFeed:
                 Intent areaIntent = new Intent(this, EventsInMyArea.class);
                 this.startActivity(areaIntent);
@@ -176,6 +174,11 @@ public class EventIndexActivity extends AppCompatActivity {
                 return true;
 
 
+
+            case R.id.upComingEvents:
+                Intent upcomingEvents = new Intent(this, UsersUpcomingEvents.class);
+                this.startActivity(upcomingEvents);
+                return true;
 
 
 
